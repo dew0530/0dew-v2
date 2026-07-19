@@ -61,20 +61,26 @@
   },
   {
     "lectureId": "hero",
-    "image": "images/gallery-hero-1.jpg",
-    "caption": "랜선 그림책 파티 (Zoom)",
-    "alt": "랜선 그림책 파티 줌 진행 화면"
+    "image": "images/2026-07-19-202147-20260719-202408.jpg",
+    "caption": "우리 아이 생활 습관 길잡이 선정 (알라딘)",
+    "alt": ""
   },
   {
     "lectureId": "hero",
-    "image": "images/gallery-hero-2.jpg",
-    "caption": "초등학교 작가와의 만남",
-    "alt": "랜선 파티에서 활동을 보여주는 어린이"
+    "image": "images/2026-07-19-202133-20260719-202457.jpg",
+    "caption": "'습관/입학' 도서 선정 (교보문고)",
+    "alt": ""
   },
   {
     "lectureId": "banchan",
     "image": "images/gallery-hero-3.jpg",
     "caption": "파주출판도서 어린이 책잔치",
     "alt": "어린이 책잔치 강연장"
+  },
+  {
+    "lectureId": "hero",
+    "image": "images/2026-07-19-202120-20260719-202551.jpg",
+    "caption": "스쿨콜라보 '이달의 추천도서' 선정 (예스24)",
+    "alt": ""
   }
 ]
