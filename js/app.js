@@ -186,22 +186,26 @@
     </div></section>`;
   }
 
-  function renderWhy(site) {
-    const w = obj(site.why);
-    const cards = arr(w.cards);
-    if (!cards.length) return '';
-    return `<section id="why"><div class="wrap">
-      ${w.heroImage ? `<img class="why-hero reveal" src="${esc(w.heroImage)}" alt="${esc(w.heroAlt)}" loading="lazy">` : ''}
-      ${secHead(w)}
-      <div class="why-grid">
+function renderWhy(site) {
+  const w = obj(site.why);
+  const cards = arr(w.cards);
+  if (!cards.length) return '';
+
+  return `<section id="why"><div class="wrap">
+    ${w.heroImage ? `<img class="why-hero reveal" src="${esc(w.heroImage)}" alt="${esc(w.heroAlt)}" loading="lazy">` : ''}
+    ${secHead(w)}
+    <div class="why-grid">
+      ${cards.map(c => `
         <div class="why-card reveal">
           ${c.icon ? `<div class="ico">${esc(c.icon)}</div>` : ''}
           ${c.titleHtml ? `<h3>${raw(c.titleHtml)}</h3>` : ''}
           ${c.text ? `<p>${esc(c.text)}</p>` : ''}
           ${c.photo ? `<img class="why-photo" src="${esc(c.photo)}" alt="${esc(c.photoAlt)}">` : ''}
-        </div>`).join('')}
-      </div>
-    </div></section>`;
+        </div>
+      `).join('')}
+    </div>
+  </div></section>`;
+}
   }
 
   function renderLectures(site, lectures, books) {
