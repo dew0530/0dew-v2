@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관리 페이지 — 김이슬 작가 홈페이지</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#FFF9EC;--mint:#A5DFD6;--mint-deep:#5FBDAF;--tomato:#FF5A36;--sun:#FFD644;
+  --leaf:#3E9B4F;--ink:#2E2A26;--radius:22px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);background:var(--cream);line-height:1.65;word-break:keep-all;padding-bottom:120px}
+.jua{font-family:'Jua'}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px}
+header{background:var(--mint);padding:26px 0 22px;border-bottom:2px dashed rgba(46,42,38,.15)}
+header h1{font-family:'Jua';font-size:1.6rem;display:flex;align-items:center;gap:10px}
+header p{font-size:.88rem;color:#3b5a54;margin-top:4px}
+.howto{background:#fff;border:3px dashed var(--tomato);border-radius:var(--radius);padding:18px 22px;margin:22px auto;font-size:.88rem}
+.howto b{font-family:'Jua';font-weight:400}
+.howto ol{margin:8px 0 0 20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px;position:sticky;top:0;background:var(--cream);padding:12px 0;z-index:20}
+.tab{font-family:'Jua';font-size:.95rem;background:#fff;border:2px solid rgba(46,42,38,.12);border-radius:999px;
+  padding:9px 18px;cursor:pointer;transition:transform .12s}
+.tab:hover{transform:translateY(-2px)}
+.tab.on{background:var(--ink);color:var(--sun);border-color:var(--ink)}
+.panel{display:none}
+.panel.on{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.panel-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.panel-head h2{font-family:'Jua';font-size:1.25rem;flex:1}
+.btn{font-family:'Jua';font-size:.92rem;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:transform .12s}
+.btn:hover{transform:translateY(-2px)}
+.btn-save{background:var(--tomato);color:#fff;box-shadow:0 3px 0 #c93a1c}
+.btn-add{background:var(--mint-deep);color:#fff;box-shadow:0 3px 0 #3f8d81}
+.btn-ghost{background:#fff;box-shadow:0 3px 0 rgba(46,42,38,.2)}
+.hint{font-size:.78rem;color:#8a8378;margin-top:3px}
+.item{background:#fff;border-radius:18px;border:2px solid rgba(46,42,38,.08);box-shadow:0 3px 0 rgba(46,42,38,.08);
+  margin-bottom:14px;overflow:hidden}
+.item-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;cursor:pointer;background:rgba(165,223,214,.18)}
+.item-bar .t{font-family:'Jua';font-size:1rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item-bar .arrow{transition:transform .2s;color:#8a8378}
+.item.open .item-bar .arrow{transform:rotate(180deg)}
+.mini{border:0;background:#fff;border-radius:999px;width:30px;height:30px;cursor:pointer;font-size:.85rem;
+  box-shadow:0 2px 0 rgba(46,42,38,.18);flex:none}
+.mini.del{background:var(--tomato);color:#fff}
+.item-body{display:none;padding:16px 18px 20px;border-top:2px dashed rgba(46,42,38,.1)}
+.item.open .item-body{display:block}
+.field{margin-bottom:14px}
+.field>label{font-family:'Jua';font-size:.9rem;display:block;margin-bottom:5px}
+.field .req{color:var(--tomato)}
+input[type=text],textarea,select{width:100%;font-family:inherit;font-size:.9rem;color:var(--ink);
+  border:2px solid rgba(46,42,38,.14);border-radius:12px;padding:10px 12px;background:#fffdf8}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--mint-deep)}
+textarea{min-height:72px;resize:vertical}
+.sub{background:var(--cream);border-radius:14px;padding:12px 14px;margin-bottom:10px;position:relative}
+.sub .mini.del{position:absolute;top:8px;right:8px}
+.sub .field{margin-bottom:10px}
+.sub .field:last-child{margin-bottom:0}
+.addsub{font-family:'Jua';font-size:.85rem;background:none;border:2px dashed var(--mint-deep);color:var(--ink);
+  border-radius:12px;padding:8px 14px;cursor:pointer;width:100%}
+.empty-note{background:#fff;border-radius:18px;padding:26px;text-align:center;color:#8a8378;font-size:.9rem;
+  border:2px dashed rgba(46,42,38,.15);margin-bottom:14px}
+.loaderr{background:#fff;border:3px dashed var(--tomato);border-radius:18px;padding:20px;font-size:.88rem;margin-bottom:16px}
+.loaderr input[type=file]{margin-top:10px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+  font-family:'Jua';padding:12px 22px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:99;
+  opacity:0;pointer-events:none;transition:opacity .25s;max-width:92vw;text-align:center;font-size:.9rem}
+.toast.on{opacity:1}
+/* validator */
+.vwrap textarea{min-height:200px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;word-break:break-all}
+.vres{margin-top:14px;border-radius:16px;padding:16px 18px;font-size:.88rem;display:none}
+.vres.ok{display:block;background:#E9F6F3;border:2px solid var(--mint-deep)}
+.vres.bad{display:block;background:#FFF0EC;border:2px solid var(--tomato)}
+.vcode{background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;margin-top:10px;
+  font-family:ui-monospace,Consolas,monospace;font-size:.78rem;overflow-x:auto;white-space:pre;line-height:1.5}
+.vcode .bad-line{color:#FFD644}
+.vcode .caret{color:#FF5A36;font-weight:900}
+footer{margin-top:40px;text-align:center;font-size:.8rem;color:#8a8378}
+/* GitHub 연결 상자 */
+.ghbox{background:#fff;border:2px solid rgba(46,42,38,.1);border-radius:18px;margin-bottom:18px;overflow:hidden}
+.ghbar{display:flex;align-items:center;gap:12px;padding:12px 18px;cursor:pointer;background:rgba(165,223,214,.18)}
+.ghbar .jua{font-size:1rem}
+.ghstatus{font-size:.78rem;border-radius:999px;padding:3px 12px;font-weight:700}
+.ghstatus.off{background:#f1ede4;color:#8a8378}
+.ghstatus.on{background:#E9F6F3;color:var(--mint-deep)}
+.ghbody{display:none;padding:14px 18px 18px;border-top:2px dashed rgba(46,42,38,.1)}
+.ghbox.open .ghbody{display:block}
+.ghgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media(max-width:560px){.ghgrid{grid-template-columns:1fr}}
+/* 업로드 버튼이 붙은 입력칸 */
+.upwrap{display:flex;gap:8px}
+.upwrap input{flex:1;min-width:0}
+.upbtn{font-family:'Jua';font-size:.85rem;border:0;border-radius:12px;padding:0 16px;cursor:pointer;
+  background:var(--mint-deep);color:#fff;box-shadow:0 3px 0 #3f8d81;flex:none;white-space:nowrap}
+.upbtn:hover{transform:translateY(-1px)}
+/* 아래 고정 배포 바 */
+.deploybar{position:fixed;bottom:0;left:0;right:0;z-index:60;background:var(--ink);color:#fff;
+  display:none;align-items:center;justify-content:center;gap:16px;padding:12px 16px;font-size:.9rem;flex-wrap:wrap}
+.deploybar.show{display:flex}
+.deploybar .btn-save{padding:9px 20px}
+@media(max-width:560px){.tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:10px}.tab{flex:none}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <h1>🛠️ 홈페이지 관리 페이지</h1>
+  <p>여기서 내용을 고치고 파일을 내려받아 교체하면 홈페이지에 반영됩니다. JSON 문법을 몰라도 괜찮아요!</p>
+</div></header>
+
+<div class="wrap">
+  <div class="howto">
+    <b>📌 수정 방법</b>
+    <p style="margin-top:6px"><b style="color:var(--mint-deep)">GitHub이 연결되어 있으면</b> — 내용을 고치고 아래 <b style="color:var(--tomato)">[🚀 사이트에 올리기]</b> 버튼만 누르면 끝!
+    1~2분 뒤 Cloudflare가 자동으로 배포합니다. 사진과 PDF도 [올리기] 버튼으로 바로 업로드됩니다.</p>
+    <p style="margin-top:6px"><b>연결 전이라면</b> — 예전처럼 ① 내용 수정 ② [💾 ○○.json 내려받기] ③ data/ 폴더에 바꿔치기 후 재배포. (연결 방법은 README 참고)</p>
+  </div>
+
+  <div class="ghbox" id="ghbox">
+    <div class="ghbar" id="ghbar">
+      <span class="jua">🔗 GitHub 연결</span>
+      <span id="ghstatus" class="ghstatus off">연결 안 됨 — 내려받기 방식으로 동작</span>
+      <span class="arrow" style="margin-left:auto;color:#8a8378">▾</span>
+    </div>
+    <div class="ghbody" id="ghbody">
+      <p class="hint" style="margin-bottom:10px">한 번만 설정하면 됩니다. 저장소 만들기·토큰 발급 방법은 README의 "GitHub 연결하기"를 그대로 따라 하세요.
+      입력한 정보(토큰 포함)는 <b>지금 이 브라우저에만</b> 저장되며 다른 곳으로 전송되지 않습니다.</p>
+      <div class="ghgrid">
+        <div class="field"><label>GitHub 아이디</label><input type="text" id="gh-owner" placeholder="예: 0dew0dew"></div>
+        <div class="field"><label>저장소 이름</label><input type="text" id="gh-repo" placeholder="예: kimyiseul-site"></div>
+        <div class="field"><label>브랜치</label><input type="text" id="gh-branch" placeholder="main"></div>
+        <div class="field"><label>액세스 토큰 (github_pat_… )</label><input type="password" id="gh-token" placeholder="README의 안내대로 발급"></div>
+      </div>
+      <p>
+        <button class="btn btn-add" id="gh-save-btn">연결 저장</button>
+        <button class="btn btn-ghost" id="gh-test-btn">연결 테스트</button>
+        <button class="btn btn-ghost" id="gh-clear-btn">연결 해제</button>
+      </p>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="panels"></div>
+</div>
+
+<input type="file" id="upfile" hidden>
+<div class="deploybar" id="deploybar">
+  <span id="dirtymsg">저장 안 된 변경 0건</span>
+  <button class="btn btn-save" id="deploy-btn">🚀 사이트에 올리기</button>
+</div>
+<div class="toast" id="toast"></div>
+<footer>김이슬 작가 홈페이지 관리 도구 · 이 페이지는 사이트 내용을 직접 바꾸지 않으며, 파일 내려받기만 제공합니다.</footer>
+
+<script>
+'use strict';
+/* =====================================================================
+   김이슬 작가 홈페이지 관리 페이지
+   - data/*.json 을 불러와 입력 폼으로 보여 주고,
+   - 고친 내용을 올바른 JSON 파일로 만들어 내려받게 해 줍니다.
+   ===================================================================== */
+
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g,
+  (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- 각 파일의 입력 항목 정의 ---------- */
+const F = (k, label, opt) => Object.assign({ k, label, type: 'text' }, opt || {});
+
+const SCHEMAS = {
+  books: {
+    file: 'books.json', tab: '📚 책', itemName: '책',
+    titleOf: (it) => (it.emoji ? it.emoji + ' ' : '') + (it.title || '(제목 없음)'),
+    fields: [
+      F('id', '아이디 (영문 소문자)', { req: true, hint: '예: banchan · 강연 탭의 "연결된 책 아이디"와 똑같아야 해요. 띄어쓰기 없이 영문/숫자만.' }),
+      F('emoji', '이모지 한 글자', { hint: '예: 🍙 — 제목 앞에 붙습니다' }),
+      F('title', '책 제목', { req: true }),
+      F('cover', '표지 사진', { type: 'image', hint: '[📷 올리기]를 누르면 자동으로 압축해 저장돼요 (GitHub 연결 시 images 폴더에 바로 업로드)' }),
+      F('coverAlt', '표지 사진 설명 (화면낭독기용)'),
+      F('buyUrl', '구매 링크 주소', { hint: '예: https://www.yes24.com/...' }),
+      F('buyLabel', '구매 버튼 문구', { hint: '예: 예스24에서 책 보기 →' }),
+      F('storyIcon', '책 소개 아이콘', { hint: '예: 📕' }),
+      F('story', '책 소개 (2~3문장)', { type: 'textarea' }),
+      F('videos', '영상 (북트레일러 등)', { type: 'objlist', item: [
+        F('url', '영상 주소 — 유튜브·인스타그램·네이버TV·비메오 등 아무 링크 OK', { hint: '유튜브·네이버TV·비메오는 화면에서 바로 재생, 인스타그램 등은 "보러 가기" 버튼으로 연결돼요. 비우면 "곧 공개됩니다" 표시' }),
+        F('title', '영상 제목'),
+        F('sub', '한 줄 설명')
+      ]})
+    ]
+  },
+  lectures: {
+    file: 'lectures.json', tab: '🎤 강연', itemName: '강연 프로그램',
+    titleOf: (it) => (it.eyebrow ? it.eyebrow + ' — ' : '') + (it.id || '(아이디 없음)'),
+    fields: [
+      F('id', '아이디 (영문 소문자)', { req: true, hint: '예: banchan' }),
+      F('bookId', '연결된 책 아이디', { req: true, hint: '책 탭에서 만든 아이디와 똑같이 적어 주세요' }),
+      F('theme', '포인트 색', { type: 'select', options: [['tomato', '🔴 토마토(빨강)'], ['mint', '🟢 민트'], ['leaf', '🌿 초록']] }),
+      F('eyebrow', '작은 머리글', { hint: '예: 강연 프로그램 ④' }),
+      F('tagline', '한 줄 슬로건', { hint: '예: 골고루! 맛있게! 즐겁게! — ...' }),
+      F('oneLiner', '대표 강연 카드의 소개 문장', { type: 'textarea' }),
+      F('keywords', '키워드 (한 줄에 하나씩)', { type: 'lines', hint: '예: #식습관' }),
+      F('filterLabel', '주제 필터 버튼 문구', { hint: '예: 🍙 식습관 — 비워 두면 필터 버튼이 안 생겨요' }),
+      F('effects', '교육 효과 (한 줄에 하나씩)', { type: 'lines' }),
+      F('targets', '추천 대상 (한 줄에 하나씩)', { type: 'lines' }),
+      F('flow', '강연 진행 순서', { type: 'objlist', item: [F('title', '단계 이름'), F('desc', '짧은 설명')] }),
+      F('activitiesTitle', '독후활동 제목', { hint: '예: 독후활동 — 읽고, 만들고, 약속해요!' }),
+      F('activities', '독후활동 카드', { type: 'objlist', item: [F('title', '활동 이름'), F('desc', '설명 · 준비물')] }),
+      F('note', '특별 안내 상자 (없으면 비워 두세요)', { type: 'obj', item: [F('icon', '아이콘'), F('title', '제목'), F('text', '내용', { type: 'textarea' })] }),
+      F('videosTitle', '영상 묶음 제목', { hint: '예: 북트레일러' }),
+      F('galleryTitle', '사진 묶음 제목', { hint: '예: 활동 사진' }),
+      F('recoWhy', '강연 추천 결과의 추천 이유', { type: 'textarea' }),
+      F('recoKeywords', '추천 결과 키워드 (한 줄에 하나씩)', { type: 'lines' }),
+      F('recoActs', '추천 결과의 대표 독후활동', { hint: '예: 활동1 · 활동2' })
+    ]
+  },
+  gallery: {
+    file: 'gallery.json', tab: '📸 사진', itemName: '사진',
+    titleOf: (it) => (it.caption || it.image || '(사진)'),
+    fields: [
+      F('lectureId', '어느 프로그램의 사진인가요?', { req: true, hint: '강연 탭의 아이디: banchan / geobugi / hero (새 프로그램이면 그 아이디)' }),
+      F('image', '사진', { type: 'image', req: true, hint: '[📷 올리기]를 누르면 자동으로 압축해 저장돼요' }),
+      F('caption', '사진 아래 설명 문구'),
+      F('alt', '사진 설명 (화면낭독기용)')
+    ]
+  },
+  news: {
+    file: 'news.json', tab: '📰 소식', itemName: '소식',
+    titleOf: (it) => (it.title || '(제목 없음)'),
+    fields: [
+      F('date', '날짜 표시', { hint: '예: 2026 또는 2026.07' }),
+      F('icon', '아이콘', { hint: '예: 🎉' }),
+      F('title', '소식 제목', { req: true }),
+      F('text', '한두 문장 설명', { type: 'textarea' }),
+      F('url', '연결 주소 (없으면 비워 두세요)', { hint: '넣으면 카드를 누를 때 이 주소로 이동해요' })
+    ]
+  },
+  reviews: {
+    file: 'reviews.json', tab: '💬 후기', itemName: '후기',
+    titleOf: (it) => (it.author || '(작성자)') + ' — ' + String(it.text || '').slice(0, 20) + '…',
+    fields: [
+      F('text', '후기 내용', { type: 'textarea', req: true }),
+      F('author', '작성자', { hint: '예: OO초등학교 교사' }),
+      F('context', '어떤 강연이었나요?', { hint: '예: 판타스틱 반찬 특공대 강연' })
+    ]
+  },
+  faq: {
+    file: 'faq.json', tab: '❓ FAQ', itemName: '질문',
+    titleOf: (it) => (it.q || '(질문 없음)'),
+    fields: [
+      F('q', '질문', { req: true }),
+      F('a', '답변', { type: 'textarea', req: true })
+    ]
+  },
+  pdfs: {
+    file: 'pdfs.json', tab: '📄 활동지', itemName: '활동지 PDF',
+    titleOf: (it) => (it.title || it.file || '(활동지)'),
+    fields: [
+      F('lectureId', '어느 프로그램의 활동지인가요?', { req: true, hint: '강연 탭의 아이디: banchan / geobugi / hero (새 프로그램이면 그 아이디)' }),
+      F('title', '버튼에 보일 이름', { req: true, hint: '예: 식판 활동지' }),
+      F('file', 'PDF 파일', { type: 'pdf', req: true, hint: '[📄 올리기]로 업로드하면 사이트의 해당 프로그램에 내려받기 버튼이 자동으로 생겨요' })
+    ]
+  }
+};
+
+/* 기본 정보(site.json) 탭: 자주 고치는 항목만 추려서 보여 줍니다 */
+const SITE_FIELDS = [
+  { path: 'hero.eyebrow', label: '맨 위 작은 소개 문구' },
+  { path: 'hero.titleHtml', label: '큰 제목', type: 'textarea', hint: '줄바꿈은 <br>, 빨간 강조는 <span class="hl">글자</span> 그대로 쓰면 됩니다' },
+  { path: 'hero.lead', label: '큰 제목 아래 소개 문단', type: 'textarea' },
+  { path: 'why.desc', label: '"왜 김이슬 작가의 강연일까요?" 아래 설명', type: 'textarea' },
+  { path: 'about.desc', label: '작가 소개 문단', type: 'textarea' },
+  { path: 'contact.desc', label: '강연 의뢰서 안내 문단', type: 'textarea' },
+  { path: 'contact.ctaHref', label: '문의 버튼 연결 주소', hint: '메일이면 mailto:주소 형태로 적어 주세요' },
+  { path: 'contact.contacts', label: '연락처 목록', type: 'objlist', item: [
+    F('icon', '아이콘', { hint: '예: 📞 ✉️ 📷' }),
+    F('label', '보이는 글자'),
+    F('href', '연결 주소', { hint: '전화는 tel:010-…, 메일은 mailto:…, 인스타그램은 전체 주소' })
+  ]}
+];
+
+/* ---------- 상태 ---------- */
+const state = { data: {}, site: null, failed: {} };
+
+function getPath(o, path) { return path.split('.').reduce((a, k) => (a == null ? a : a[k]), o); }
+function setPath(o, path, v) {
+  const ks = path.split('.');
+  let cur = o;
+  for (let i = 0; i < ks.length - 1; i++) { if (cur[ks[i]] == null || typeof cur[ks[i]] !== 'object') cur[ks[i]] = {}; cur = cur[ks[i]]; }
+  cur[ks[ks.length - 1]] = v;
+}
+
+async function fetchJson(file) {
+  const r = await fetch('data/' + file, { cache: 'no-cache' });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const text = (await r.text()).replace(/^\uFEFF/, '');
+  return JSON.parse(text);
+}
+
+/* ---------- 새 항목 기본값 ---------- */
+function blankItem(fields) {
+  const it = {};
+  fields.forEach((f) => {
+    if (f.type === 'lines' || f.type === 'objlist') it[f.k] = [];
+    else if (f.type === 'obj') it[f.k] = {};
+    else it[f.k] = '';
+  });
+  return it;
+}
+function blankSub(item) { const o = {}; item.forEach((f) => { o[f.k] = ''; }); return o; }
+
+/* ---------- 폼 그리기 ---------- */
+function fieldHtml(f, value, name) {
+  const req = f.req ? ' <span class="req">*</span>' : '';
+  const hint = f.hint ? `<p class="hint">${esc(f.hint)}</p>` : '';
+  if (f.type === 'textarea')
+    return `<div class="field"><label>${esc(f.label)}${req}</label><textarea data-bind="${name}">${esc(value)}</textarea>${hint}</div>`;
+  if (f.type === 'lines')
+    return `<div class="field"><label>${esc(f.label)}${req}</label><textarea data-bind="${name}" data-kind="lines">${esc((value || []).join('\n'))}</textarea>${hint}</div>`;
+  if (f.type === 'select') {
+    const opts = (f.options || []).map(([v, l]) => `<option value="${esc(v)}"${v === value ? ' selected' : ''}>${esc(l)}</option>`).join('');
+    return `<div class="field"><label>${esc(f.label)}${req}</label><select data-bind="${name}">${opts}</select>${hint}</div>`;
+  }
+  if (f.type === 'obj') {
+    const inner = (f.item || []).map((sf) => fieldHtml(sf, (value || {})[sf.k] || '', name + '.' + sf.k)).join('');
+    return `<div class="field"><label>${esc(f.label)}</label><div class="sub">${inner}</div>${hint}</div>`;
+  }
+  if (f.type === 'objlist') {
+    const rows = (value || []).map((row, ri) => `
+      <div class="sub">
+        <button class="mini del" data-subdel="${name}::${ri}" title="이 항목 삭제">✕</button>
+        ${(f.item || []).map((sf) => fieldHtml(sf, (row || {})[sf.k] || '', name + '.' + ri + '.' + sf.k)).join('')}
+      </div>`).join('');
+    return `<div class="field"><label>${esc(f.label)}</label>${rows}
+      <button class="addsub" data-subadd="${name}">＋ ${esc(f.label)} 추가</button>${hint}</div>`;
+  }
+  if (f.type === 'image' || f.type === 'pdf') {
+    const icon = f.type === 'image' ? '📷' : '📄';
+    return `<div class="field"><label>${esc(f.label)}${req}</label>
+      <div class="upwrap"><input type="text" data-bind="${name}" value="${esc(value)}" placeholder="${f.type === 'image' ? 'images/파일이름.jpg' : 'pdfs/파일이름.pdf'}">
+      <button type="button" class="upbtn" data-upload="${name}" data-upkind="${f.type}">${icon} 올리기</button></div>${hint}</div>`;
+  }
+  return `<div class="field"><label>${esc(f.label)}${req}</label><input type="text" data-bind="${name}" value="${esc(value)}">${hint}</div>`;
+}
+
+function renderListPanel(key) {
+  const sc = SCHEMAS[key];
+  const box = document.getElementById('panel-' + key);
+  if (state.failed[key]) {
+    box.innerHTML = `<div class="loaderr">⚠️ <b>data/${sc.file}</b> 을 불러오지 못했어요.<br>
+      <span class="hint">배포된 주소의 admin.html에서 열면 자동으로 불러와집니다. 지금 컴퓨터에서 열었다면 아래에서 파일을 직접 선택해 주세요.</span><br>
+      <input type="file" accept=".json" data-open="${key}"></div>`;
+    return;
+  }
+  const list = state.data[key] || [];
+  const items = list.map((it, i) => `
+    <div class="item" data-key="${key}" data-i="${i}">
+      <div class="item-bar" data-toggle>
+        <span class="t">${esc(sc.titleOf(it))}</span>
+        <button class="mini" data-up title="위로">↑</button>
+        <button class="mini" data-down title="아래로">↓</button>
+        <button class="mini del" data-del title="삭제">✕</button>
+        <span class="arrow">▾</span>
+      </div>
+      <div class="item-body">${sc.fields.map((f) => fieldHtml(f, it[f.k] != null ? it[f.k] : (f.type === 'lines' || f.type === 'objlist' ? [] : f.type === 'obj' ? {} : ''), 'item.' + f.k)).join('')}</div>
+    </div>`).join('');
+  box.innerHTML = `
+    <div class="panel-head">
+      <h2>${sc.tab} <span class="hint" style="display:inline">— ${list.length}개</span></h2>
+      <button class="btn btn-add" data-additem="${key}">＋ 새 ${esc(sc.itemName)} 추가</button>
+      <button class="btn btn-save" data-download="${key}">💾 ${sc.file} 내려받기</button>
+    </div>
+    ${list.length ? items : `<div class="empty-note">아직 항목이 없어요. [＋ 새 ${esc(sc.itemName)} 추가]를 눌러 시작하세요.<br>이대로 내려받으면 홈페이지에서 이 섹션이 조용히 숨겨집니다.</div>`}`;
+}
+
+function renderSitePanel() {
+  const box = document.getElementById('panel-siteinfo');
+  if (!state.site) {
+    box.innerHTML = `<div class="loaderr">⚠️ <b>data/site.json</b> 을 불러오지 못했어요.<br>
+      <input type="file" accept=".json" data-open="siteinfo"></div>`;
+    return;
+  }
+  const inner = SITE_FIELDS.map((f) => fieldHtml(f, getPath(state.site, f.path) != null ? getPath(state.site, f.path) : (f.type === 'objlist' ? [] : ''), 'site.' + f.path)).join('');
+  box.innerHTML = `
+    <div class="panel-head">
+      <h2>⚙️ 기본 정보 <span class="hint" style="display:inline">— 자주 고치는 문구·연락처</span></h2>
+      <button class="btn btn-save" data-download="siteinfo">💾 site.json 내려받기</button>
+    </div>
+    <p class="hint" style="margin-bottom:12px">여기 없는 항목(메뉴 이름, WHY 카드, 강연 추천 질문 등)은 data/site.json 파일에서 직접 고칠 수 있어요. 방법은 README 참고!</p>
+    <div class="item open"><div class="item-body" style="display:block">${inner}</div></div>`;
+}
+
+function renderValidator() {
+  document.getElementById('panel-validator').innerHTML = `
+    <div class="panel-head"><h2>🩺 파일 검사 <span class="hint" style="display:inline">— JSON 문법이 맞는지 확인</span></h2></div>
+    <div class="vwrap">
+      <p class="hint" style="margin-bottom:8px">검사할 JSON 파일을 선택하거나, 내용을 아래 칸에 붙여넣고 [검사하기]를 누르세요.</p>
+      <p style="margin-bottom:10px"><input type="file" accept=".json" id="vfile"></p>
+      <textarea id="vtext" placeholder='여기에 JSON 내용을 붙여넣으세요'></textarea>
+      <p style="margin-top:10px"><button class="btn btn-save" id="vcheck">🔍 검사하기</button></p>
+      <div class="vres" id="vres"></div>
+    </div>`;
+  document.getElementById('vfile').addEventListener('change', async (e) => {
+    const f = e.target.files[0];
+    if (f) document.getElementById('vtext').value = await f.text();
+  });
+  document.getElementById('vcheck').addEventListener('click', () => {
+    const text = document.getElementById('vtext').value.replace(/^\uFEFF/, '');
+    const res = document.getElementById('vres');
+    if (!text.trim()) { res.className = 'vres bad'; res.innerHTML = '내용이 비어 있어요. 파일을 선택하거나 붙여넣어 주세요.'; return; }
+    try {
+      const v = JSON.parse(text);
+      const n = Array.isArray(v) ? ` 항목 ${v.length}개가 들어 있어요.` : '';
+      res.className = 'vres ok';
+      res.innerHTML = `✅ <b>문법이 올바릅니다!</b>${n} 이대로 data 폴더에 저장하면 됩니다.`;
+    } catch (err) {
+      const d = locateError(text, err);
+      res.className = 'vres bad';
+      res.innerHTML = `❌ <b>${d.line ? d.line + '번째 줄' : '어딘가'}에 문법 오류가 있어요.</b><br>${esc(d.hint)}${d.snippet}`;
+    }
+  });
+}
+
+function locateError(text, err) {
+  const msg = String(err && err.message || '');
+  let pos = -1, line = null, col = null;
+  let m = msg.match(/position (\d+)/); if (m) pos = +m[1];
+  m = msg.match(/line (\d+) column (\d+)/);
+  if (m) { line = +m[1]; col = +m[2]; }
+  else if (pos >= 0) {
+    const before = text.slice(0, pos).split('\n');
+    line = before.length; col = before[before.length - 1].length + 1;
+  }
+  let hint = '따옴표(")나 쉼표(,), 괄호가 빠지거나 남지 않았는지 그 줄 주변을 확인해 보세요.';
+  const lineAt = (idx) => { const b = text.slice(0, idx).split('\n'); return { L: b.length, C: b[b.length - 1].length + 1 }; };
+  let mm;
+  if ((mm = text.match(/[\u201C\u201D\u2018\u2019]/))) {
+    hint = '둥근따옴표(\u201C \u201D)가 섞여 있어요. 한글 입력기에서 자동으로 바뀐 것이니, 곧은따옴표(")로 바꿔 주세요.';
+    if (!line) { const p = lineAt(mm.index); line = p.L; col = p.C; }
+  } else if ((mm = text.match(/,\s*[\]}]/))) {
+    hint = '마지막 항목 뒤에 쉼표(,)가 남아 있어요. 이 쉼표를 지워 주세요.';
+    if (!line) { const p = lineAt(mm.index); line = p.L; col = p.C; }
+  }
+  let snippet = '';
+  if (line) {
+    const lines = text.split('\n');
+    const from = Math.max(0, line - 3), to = Math.min(lines.length, line + 2);
+    let out = '';
+    for (let i = from; i < to; i++) {
+      const num = String(i + 1).padStart(4, ' ');
+      if (i + 1 === line) {
+        out += `<span class="bad-line">${num}  ${esc(lines[i])}</span>\n`;
+        out += `      ${' '.repeat(Math.max(0, (col || 1) - 1))}<span class="caret">▲ 이 근처!</span>\n`;
+      } else out += `${num}  ${esc(lines[i])}\n`;
+    }
+    snippet = `<div class="vcode">${out}</div>`;
+  }
+  return { line, col, hint, snippet };
+}
+
+/* ---------- 내려받기 ---------- */
+function download(key) {
+  let file, payload;
+  if (key === 'siteinfo') { file = 'site.json'; payload = state.site; }
+  else { file = SCHEMAS[key].file; payload = state.data[key] || []; }
+  if (payload == null) { toast('불러온 데이터가 없어 내려받을 수 없어요.'); return; }
+  const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = file;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  toast(`💾 ${file} 내려받기 완료! data 폴더의 같은 이름 파일과 바꾼 뒤 다시 배포하세요.`);
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 4200);
+}
+
+/* ---------- GitHub 연결(자동 배포·업로드) ---------- */
+const GH_KEY = 'kimyiseul-gh-config';
+function ghGet() { try { return JSON.parse(localStorage.getItem(GH_KEY)) || null; } catch (e) { return null; } }
+function ghReady() { const g = ghGet(); return !!(g && g.owner && g.repo && g.token); }
+function ghHeaders() {
+  const g = ghGet();
+  return { 'Authorization': 'Bearer ' + g.token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+}
+function ghUrl(path) {
+  const g = ghGet();
+  return 'https://api.github.com/repos/' + encodeURIComponent(g.owner) + '/' + encodeURIComponent(g.repo) + path;
+}
+function encPath(p) { return p.split('/').map(encodeURIComponent).join('/'); }
+function b64FromBytes(bytes) {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 8192) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+  return btoa(bin);
+}
+function b64FromText(str) { return b64FromBytes(new TextEncoder().encode(str)); }
+
+async function ghCommitFile(path, base64, message) {
+  const g = ghGet();
+  const branch = (g.branch || 'main').trim() || 'main';
+  let sha = null;
+  try {
+    const r = await fetch(ghUrl('/contents/' + encPath(path) + '?ref=' + encodeURIComponent(branch)), { headers: ghHeaders() });
+    if (r.ok) sha = (await r.json()).sha || null;
+  } catch (e) { /* 새 파일 */ }
+  const body = { message, content: base64, branch };
+  if (sha) body.sha = sha;
+  const r2 = await fetch(ghUrl('/contents/' + encPath(path)), { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+  if (!r2.ok) {
+    let msg = 'HTTP ' + r2.status;
+    try { msg = (await r2.json()).message || msg; } catch (e) {}
+    if (r2.status === 401) msg = '토큰이 잘못됐거나 만료됐어요. README를 보고 다시 발급해 주세요.';
+    if (r2.status === 404) msg = '저장소를 찾을 수 없어요. 아이디/저장소 이름과 토큰의 저장소 권한을 확인해 주세요.';
+    throw new Error(msg);
+  }
+}
+
+/* ---------- 변경 추적 + 한 번에 올리기 ---------- */
+const dirty = new Set();
+function markDirty(key) {
+  if (key) dirty.add(key);
+  const bar = document.getElementById('deploybar');
+  const msg = document.getElementById('dirtymsg');
+  bar.classList.toggle('show', dirty.size > 0);
+  const names = [...dirty].map((k) => (k === 'siteinfo' ? 'site.json' : SCHEMAS[k].file)).join(', ');
+  msg.textContent = ghReady()
+    ? `저장 안 된 변경 ${dirty.size}건 (${names})`
+    : `저장 안 된 변경 ${dirty.size}건 — GitHub 미연결이라 [💾 내려받기]로 저장하세요`;
+}
+function fileKeyOf(el) {
+  const item = el.closest('.item[data-key]');
+  if (item) return item.dataset.key;
+  if (el.closest('#panel-siteinfo')) return 'siteinfo';
+  return null;
+}
+async function deployAll() {
+  if (!dirty.size) { toast('올릴 변경사항이 없어요.'); return; }
+  if (!ghReady()) {
+    document.getElementById('ghbox').classList.add('open');
+    document.getElementById('ghbox').scrollIntoView({ behavior: 'smooth' });
+    toast('먼저 GitHub을 연결해 주세요. (연결 전에는 각 탭의 [💾 내려받기]를 사용하세요)');
+    return;
+  }
+  const btn = document.getElementById('deploy-btn');
+  btn.disabled = true; btn.textContent = '올리는 중…';
+  const keys = [...dirty];
+  try {
+    for (const k of keys) {
+      const file = k === 'siteinfo' ? 'site.json' : SCHEMAS[k].file;
+      const payload = k === 'siteinfo' ? state.site : (state.data[k] || []);
+      btn.textContent = '올리는 중… ' + file;
+      await ghCommitFile('data/' + file, b64FromText(JSON.stringify(payload, null, 2) + '\n'),
+        '관리 페이지에서 ' + file + ' 수정');
+      dirty.delete(k);
+      markDirty();
+    }
+    toast('🚀 올렸어요! 1~2분 뒤 사이트에 자동으로 반영됩니다. (Cloudflare 배포 대기)');
+  } catch (err) {
+    toast('⚠️ 올리기 실패: ' + err.message);
+  }
+  btn.disabled = false; btn.textContent = '🚀 사이트에 올리기';
+}
+
+/* ---------- 사진·PDF 올리기 ---------- */
+let upCtx = null;
+function slugName(orig, ext) {
+  const base = String(orig || '').replace(/\.[^.]+$/, '').toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30);
+  const d = new Date();
+  const stamp = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0')
+    + '-' + String(d.getHours()).padStart(2, '0') + String(d.getMinutes()).padStart(2, '0') + String(d.getSeconds()).padStart(2, '0');
+  return (base ? base + '-' : '') + stamp + ext;
+}
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 1100 / img.width);
+      const cvs = document.createElement('canvas');
+      cvs.width = Math.round(img.width * scale);
+      cvs.height = Math.round(img.height * scale);
+      const ctx = cvs.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+      ctx.drawImage(img, 0, 0, cvs.width, cvs.height);
+      URL.revokeObjectURL(img.src);
+      const dataUrl = cvs.toDataURL('image/jpeg', 0.8);
+      resolve(dataUrl.split(',')[1]);
+    };
+    img.onerror = () => reject(new Error('사진을 읽지 못했어요'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+async function handleUpload(file) {
+  const ctx = upCtx; upCtx = null;
+  if (!ctx || !file) return;
+  const isImg = ctx.kind === 'image';
+  try {
+    let base64, path;
+    if (isImg) {
+      base64 = await compressImage(file);
+      path = 'images/' + slugName(file.name, '.jpg');
+    } else {
+      if (!/pdf$/i.test(file.name) && file.type !== 'application/pdf') { toast('PDF 파일만 올릴 수 있어요.'); return; }
+      if (file.size > 20 * 1024 * 1024) { toast('PDF가 너무 커요(20MB 이하). 용량을 줄여 주세요.'); return; }
+      base64 = b64FromBytes(new Uint8Array(await file.arrayBuffer()));
+      path = 'pdfs/' + slugName(file.name, '.pdf');
+    }
+    if (ghReady()) {
+      toast((isImg ? '📷 사진' : '📄 PDF') + ' 올리는 중…');
+      await ghCommitFile(path, base64, '관리 페이지에서 ' + path + ' 업로드');
+      setUploadedPath(ctx, path);
+      toast('✅ 업로드 완료! 경로가 자동으로 입력됐어요. 내용 수정 후 [🚀 사이트에 올리기]까지 눌러 주세요.');
+    } else {
+      // GitHub 미연결: 압축(변환)된 파일을 내려받고 경로만 채워 줌
+      const bin = atob(base64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const blob = new Blob([bytes], { type: isImg ? 'image/jpeg' : 'application/pdf' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = path.split('/').pop();
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      setUploadedPath(ctx, path);
+      toast('GitHub 미연결: ' + (isImg ? '압축된 사진' : 'PDF') + '을 내려받았어요. 이 파일을 ' + path.split('/')[0] + '/ 폴더에 넣고 배포해 주세요.');
+    }
+  } catch (err) {
+    toast('⚠️ 올리기 실패: ' + err.message);
+  }
+}
+function setUploadedPath(ctx, path) {
+  const input = ctx.input;
+  input.value = path;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+/* ---------- GitHub 설정 UI ---------- */
+function ghRenderStatus() {
+  const s = document.getElementById('ghstatus');
+  if (ghReady()) {
+    const g = ghGet();
+    s.className = 'ghstatus on';
+    s.textContent = '✅ 연결됨: ' + g.owner + '/' + g.repo + ' — 원클릭 저장 사용 가능';
+  } else {
+    s.className = 'ghstatus off';
+    s.textContent = '연결 안 됨 — 내려받기 방식으로 동작';
+  }
+  markDirty();
+}
+function ghInitUi() {
+  const g = ghGet() || {};
+  document.getElementById('gh-owner').value = g.owner || '';
+  document.getElementById('gh-repo').value = g.repo || '';
+  document.getElementById('gh-branch').value = g.branch || 'main';
+  document.getElementById('gh-token').value = g.token || '';
+  document.getElementById('ghbar').addEventListener('click', () => document.getElementById('ghbox').classList.toggle('open'));
+  document.getElementById('gh-save-btn').addEventListener('click', () => {
+    localStorage.setItem(GH_KEY, JSON.stringify({
+      owner: document.getElementById('gh-owner').value.trim(),
+      repo: document.getElementById('gh-repo').value.trim(),
+      branch: document.getElementById('gh-branch').value.trim() || 'main',
+      token: document.getElementById('gh-token').value.trim()
+    }));
+    ghRenderStatus();
+    toast(ghReady() ? '연결 정보를 저장했어요. [연결 테스트]로 확인해 보세요!' : '아이디·저장소·토큰을 모두 입력해 주세요.');
+  });
+  document.getElementById('gh-clear-btn').addEventListener('click', () => {
+    localStorage.removeItem(GH_KEY);
+    document.getElementById('gh-token').value = '';
+    ghRenderStatus();
+    toast('연결을 해제했어요.');
+  });
+  document.getElementById('gh-test-btn').addEventListener('click', async () => {
+    if (!ghReady()) { toast('먼저 정보를 입력하고 [연결 저장]을 눌러 주세요.'); return; }
+    try {
+      const r = await fetch(ghUrl(''), { headers: ghHeaders() });
+      if (!r.ok) throw new Error(r.status === 404 ? '저장소를 못 찾았어요 (이름/권한 확인)' : r.status === 401 ? '토큰이 잘못됐어요' : 'HTTP ' + r.status);
+      const info = await r.json();
+      toast('✅ 연결 성공! 저장소 "' + info.full_name + '"에 올릴 준비가 됐어요.');
+      document.getElementById('ghbox').classList.remove('open');
+    } catch (err) { toast('⚠️ 연결 실패: ' + err.message); }
+  });
+  document.getElementById('deploy-btn').addEventListener('click', deployAll);
+  ghRenderStatus();
+}
+
+/* ---------- 이벤트 ---------- */
+document.addEventListener('input', (e) => {
+  const bind = e.target.getAttribute('data-bind');
+  if (!bind) return;
+  markDirty(fileKeyOf(e.target));
+  let value = e.target.value;
+  if (e.target.getAttribute('data-kind') === 'lines') value = value.split('\n').map((s) => s.trim()).filter(Boolean);
+  if (bind.startsWith('site.')) { setPath(state.site, bind.slice(5), value); return; }
+  const itemEl = e.target.closest('.item[data-key]');
+  if (!itemEl) return;
+  const key = itemEl.dataset.key, i = +itemEl.dataset.i;
+  setPath(state.data[key][i], bind.slice(5), value);
+  if (e.target.closest('.item-body')) {
+    const sc = SCHEMAS[key];
+    itemEl.querySelector('.item-bar .t').textContent = sc.titleOf(state.data[key][i]);
+  }
+});
+
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  if (t.closest('[data-toggle]') && !t.closest('.mini')) {
+    t.closest('.item').classList.toggle('open'); return;
+  }
+  const itemEl = t.closest('.item[data-key]');
+  if (itemEl && (t.matches('[data-del]') || t.matches('[data-up]') || t.matches('[data-down]'))) {
+    const key = itemEl.dataset.key, i = +itemEl.dataset.i, list = state.data[key];
+    if (t.matches('[data-del]')) {
+      if (!confirm('이 항목을 삭제할까요? (내려받아 교체하기 전까지는 실제 사이트에 반영되지 않아요)')) return;
+      list.splice(i, 1);
+    } else if (t.matches('[data-up]') && i > 0) { [list[i - 1], list[i]] = [list[i], list[i - 1]]; }
+    else if (t.matches('[data-down]') && i < list.length - 1) { [list[i + 1], list[i]] = [list[i], list[i + 1]]; }
+    markDirty(key);
+    renderListPanel(key); return;
+  }
+  if (t.matches('[data-additem]')) {
+    const key = t.getAttribute('data-additem');
+    const sc = SCHEMAS[key];
+    const list = state.data[key];
+    const base = list.length ? JSON.parse(JSON.stringify(list[list.length - 1])) : blankItem(sc.fields);
+    if (list.length) {
+      sc.fields.forEach((f) => { if (f.req || f.k === 'title' || f.k === 'q') base[f.k] = ''; });
+    }
+    list.push(base);
+    markDirty(key);
+    renderListPanel(key);
+    const last = document.querySelector(`#panel-${key} .item:last-of-type`);
+    if (last) { last.classList.add('open'); last.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    toast(`새 ${sc.itemName} 칸을 만들었어요. 내용을 채운 뒤 꼭 [내려받기]를 눌러 주세요.`);
+    return;
+  }
+  if (t.matches('[data-subadd]')) {
+    const name = t.getAttribute('data-subadd');
+    const f = findField(name, t);
+    const target = resolveList(name, t);
+    if (target && f) { target.push(blankSub(f.item || [])); markDirty(fileKeyOf(t)); rerenderOwner(t); }
+    return;
+  }
+  if (t.matches('[data-subdel]')) {
+    const [name, ri] = t.getAttribute('data-subdel').split('::');
+    const target = resolveList(name, t);
+    if (target) { target.splice(+ri, 1); markDirty(fileKeyOf(t)); rerenderOwner(t); }
+    return;
+  }
+  if (t.matches('[data-upload]')) {
+    const wrap = t.closest('.upwrap');
+    upCtx = { kind: t.getAttribute('data-upkind'), input: wrap.querySelector('input[data-bind]') };
+    const up = document.getElementById('upfile');
+    up.accept = upCtx.kind === 'image' ? 'image/*' : 'application/pdf,.pdf';
+    up.value = '';
+    up.click();
+    return;
+  }
+  if (t.matches('[data-download]')) { download(t.getAttribute('data-download')); return; }
+});
+
+document.getElementById('upfile').addEventListener('change', (e) => {
+  handleUpload(e.target.files[0]);
+});
+
+document.addEventListener('change', async (e) => {
+  const open = e.target.getAttribute && e.target.getAttribute('data-open');
+  if (!open) return;
+  const f = e.target.files[0];
+  if (!f) return;
+  try {
+    const v = JSON.parse((await f.text()).replace(/^\uFEFF/, ''));
+    if (open === 'siteinfo') { state.site = v; renderSitePanel(); }
+    else { state.data[open] = Array.isArray(v) ? v : []; state.failed[open] = false; renderListPanel(open); }
+    toast('파일을 불러왔어요!');
+  } catch (err) { alert('이 파일에 JSON 문법 오류가 있어요. [🩺 파일 검사] 탭에서 위치를 확인해 주세요.'); }
+});
+
+function findField(name, el) {
+  const key = el.closest('.item[data-key]') ? el.closest('.item[data-key]').dataset.key : null;
+  if (name.startsWith('site.')) return SITE_FIELDS.find((f) => 'site.' + f.path === name);
+  const k = name.slice(5);
+  return key ? SCHEMAS[key].fields.find((f) => f.k === k) : null;
+}
+function resolveList(name, el) {
+  if (name.startsWith('site.')) {
+    let v = getPath(state.site, name.slice(5));
+    if (!Array.isArray(v)) { v = []; setPath(state.site, name.slice(5), v); }
+    return v;
+  }
+  const itemEl = el.closest('.item[data-key]');
+  if (!itemEl) return null;
+  const it = state.data[itemEl.dataset.key][+itemEl.dataset.i];
+  const k = name.slice(5);
+  if (!Array.isArray(it[k])) it[k] = [];
+  return it[k];
+}
+function rerenderOwner(el) {
+  const itemEl = el.closest('.item[data-key]');
+  if (itemEl) {
+    const key = itemEl.dataset.key, i = +itemEl.dataset.i;
+    renderListPanel(key);
+    const again = document.querySelector(`#panel-${key} .item[data-i="${i}"]`);
+    if (again) again.classList.add('open');
+  } else renderSitePanel();
+}
+
+/* ---------- 시작 ---------- */
+async function init() {
+  const tabsEl = document.getElementById('tabs');
+  const panelsEl = document.getElementById('panels');
+  const tabList = Object.keys(SCHEMAS).map((k) => [k, SCHEMAS[k].tab])
+    .concat([['siteinfo', '⚙️ 기본 정보'], ['validator', '🩺 파일 검사']]);
+  tabsEl.innerHTML = tabList.map(([k, label], i) =>
+    `<button class="tab${i === 0 ? ' on' : ''}" data-tab="${k}">${label}</button>`).join('');
+  panelsEl.innerHTML = tabList.map(([k], i) =>
+    `<div class="panel${i === 0 ? ' on' : ''}" id="panel-${k}"></div>`).join('');
+  tabsEl.addEventListener('click', (e) => {
+    const b = e.target.closest('.tab'); if (!b) return;
+    tabsEl.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === b));
+    document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('on', p.id === 'panel-' + b.dataset.tab));
+  });
+
+  await Promise.all(Object.keys(SCHEMAS).map(async (k) => {
+    try { const v = await fetchJson(SCHEMAS[k].file); state.data[k] = Array.isArray(v) ? v : []; }
+    catch (e) { state.failed[k] = true; state.data[k] = []; }
+  }));
+  try { state.site = await fetchJson('site.json'); } catch (e) { state.site = null; }
+
+  // 예전 형식 호환: 영상의 youtubeId를 url로 옮겨 줌
+  (state.data.books || []).forEach((b) => (b.videos || []).forEach((v) => {
+    if (v && v.youtubeId != null && v.url == null) { v.url = v.youtubeId; delete v.youtubeId; }
+  }));
+
+  Object.keys(SCHEMAS).forEach(renderListPanel);
+  renderSitePanel();
+  renderValidator();
+  ghInitUi();
+}
+init();
+</script>
+</body>
+</html>

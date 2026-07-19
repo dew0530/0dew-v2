@@ -1,0 +1,61 @@
+[
+  {
+    "id": "banchan",
+    "emoji": "🍙",
+    "title": "판타스틱 반찬 특공대",
+    "cover": "images/cover-banchan.jpg",
+    "coverAlt": "판타스틱 반찬 특공대 표지",
+    "buyUrl": "https://www.yes24.com/product/goods/125184490",
+    "buyLabel": "예스24에서 책 보기 →",
+    "storyIcon": "📕",
+    "story": "편식하는 아이들을 위해 뭉친 반찬 특공대! 건강하게 먹으라는 잔소리 대신, 유쾌한 작전으로 아이의 식습관을 바꾸는 그림책. SBS 뉴스에 소개되고 초등 교사들이 추천한 화제의 책입니다.",
+    "videos": [
+      {
+        "title": "《판타스틱 반찬 특공대》 북트레일러",
+        "sub": "편식하는 아이들을 위해 뭉친 반찬 특공대를 만나 보세요",
+        "url": "r6PTNtvb39A"
+      },
+      {
+        "title": "SBS 뉴스에 소개된 그림책",
+        "sub": "뉴스에서 만난 《판타스틱 반찬 특공대》",
+        "url": "RumFPVmRlH8"
+      }
+    ]
+  },
+  {
+    "id": "geobugi",
+    "emoji": "❤️",
+    "title": "거부기의 저주",
+    "cover": "images/cover-geobugi.jpg",
+    "coverAlt": "거부기의 저주 표지",
+    "buyUrl": "https://www.yes24.com/product/goods/140378581",
+    "buyLabel": "예스24에서 책 보기 →",
+    "storyIcon": "📗",
+    "story": "거북목 자세가 편해서 늘 구부정하게 다니던 주인공 우기가 진짜 거북이가 되어 버렸다!? 스마트폰과 게임에 익숙한 요즘 아이들에게 바른 자세의 중요성을 유쾌하게 알려 주는 그림책입니다.",
+    "videos": [
+      {
+        "title": "《거부기의 저주》 북트레일러",
+        "sub": "구부정한 우기의 이야기를 영상으로 만나 보세요",
+        "url": "rkowU7ZTVoo"
+      }
+    ]
+  },
+  {
+    "id": "hero",
+    "emoji": "🤝",
+    "title": "식탁 위 슈퍼 히어로",
+    "cover": "images/cover-hero.jpg",
+    "coverAlt": "식탁 위 슈퍼 히어로 표지",
+    "buyUrl": "https://www.yes24.com/product/goods/183693562",
+    "buyLabel": "예스24에서 책 보기 →",
+    "storyIcon": "📘",
+    "story": "오늘의 식탁 위에도 히어로가 있다! 밥상 앞 아이들의 상상력을 깨우며, 골고루 먹는 즐거움과 감사하는 마음을 알려 주는 이야기. 즐거운 가족 식사 문화를 만드는 밥상머리 교육 그림책입니다.",
+    "videos": [
+      {
+        "title": "《식탁 위 슈퍼 히어로》 북트레일러",
+        "sub": "식탁 위 히어로들의 이야기를 영상으로 만나 보세요",
+        "url": ""
+      }
+    ]
+  }
+]
