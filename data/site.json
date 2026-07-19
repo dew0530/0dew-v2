@@ -78,11 +78,11 @@
           },
           {
             "label": "📖 독서 행사",
-            "target": "all"
+            "target": "kids"
           },
           {
             "label": "✏️ 작가와의 만남",
-            "target": "all"
+            "target": "kids"
           }
         ]
       },
@@ -131,6 +131,8 @@
     "eyebrow": "WHY",
     "title": "왜 김이슬 작가의 강연일까요?",
     "desc": "15년 차 어린이책 편집자이자 엄마의 마음으로, 아이들이 주인공이 되는 강연을 만듭니다.",
+    "heroImage": "images/why-hero.jpg",
+    "heroAlt": "산책도서관 북콘서트에서 아이들·부모님과 함께한 단체 사진",
     "cards": [
       {
         "icon": "🎭",
@@ -160,13 +162,22 @@
         "photo": "images/why-4.jpg",
         "photoAlt": "기관 맞춤형 강연 사진"
       }
-    ],
-    "heroImage": "images/2026-5-23-3-20260719-194249.jpg"
+    ]
   },
   "lecturesSection": {
     "eyebrow": "대표 강연 프로그램",
-    "title": "세 권의 그림책, 세 가지 강연",
-    "desc": "관심 있는 주제를 누르면 꼭 맞는 프로그램을 바로 보여 드려요.",
+    "categories": [
+      {
+        "id": "kids",
+        "label": "📚 어린이 그림책"
+      },
+      {
+        "id": "creative",
+        "label": "✍️ 창작·출판"
+      }
+    ],
+    "title": "김이슬 작가의 강연 프로그램",
+    "desc": "어린이 그림책 강연부터 청소년·성인 창작 강연까지. 탭을 고르고 관심 주제를 눌러 보세요.",
     "commonFilters": [
       "📖 독서",
       "✏️ 작가와의 만남"
@@ -188,7 +199,7 @@
     "eyebrow": "작가 소개",
     "titleHtml": "아이 마음을 잘 아는<br>15년 차 어린이책 편집자",
     "desc": "밥상 앞에서 입을 꾹 닫아 버리는 딸아이를 보며 고민하던 마음을 그림책에 담았습니다. 어린이책을 만드는 편집자이자 쓰는 작가, 그리고 아이들 앞에 서는 강연가로서, 책 한 권이 아이의 하루를 바꾸는 순간을 만들고 있어요.",
-    "photo": "images/new.jpg",
+    "photo": "images/profile.jpg",
     "photoAlt": "김이슬 작가 프로필 사진",
     "photoSticker": "안녕하세요!",
     "facts": [
@@ -222,9 +233,9 @@
   "contact": {
     "label": "강 연 의 뢰 서",
     "titleHtml": "우리 아이들을 만나러<br>어디든 달려갑니다!",
-    "desc": "학교, 도서관, 서점, 어린이집, 교육청, 온라인(Zoom) 모두 가능합니다. 대상 연령·인원·희망 활동을 알려 주시면 꼭 맞는 프로그램을 제안해 드릴게요.",
+    "desc": "학교, 도서관, 서점, 어린이집, 교육청, 온라인(Zoom) 모두 가능합니다. 대상 연령·인원·희망 활동을 알려 주시면 꼭 맞는 프로그램을 제안해 드릴게요. 어린이부터 청소년, 성인까지 대상과 목적에 맞춘 맞춤형 강연도 진행합니다. 홈페이지에 소개되지 않은 프로그램도 편하게 문의해 주세요.",
     "ctaLabel": "📮 지금 강연 문의하기",
-    "ctaHref": "mailto:mybluetime@naver.com",
+    "ctaHref": "mailto:mybluetime@gmail.com",
     "contacts": [
       {
         "icon": "📞",
@@ -233,8 +244,8 @@
       },
       {
         "icon": "✉️",
-        "label": "mybluetime@naver.com",
-        "href": "mailto:mybluetime@naver.com"
+        "label": "mybluetime@gmail.com",
+        "href": "mailto:mybluetime@gmail.com"
       },
       {
         "icon": "📷",

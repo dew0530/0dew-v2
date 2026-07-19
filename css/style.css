@@ -478,3 +478,20 @@ a.news-card:hover{transform:translateY(-3px)}
   border-radius:var(--radius);border:5px solid #fff;
   box-shadow:0 12px 28px rgba(0,0,0,.12);margin-bottom:40px}
 @media(max-width:760px){.why-hero{max-height:260px;margin-bottom:28px}}
+
+/* ---------- 강연 카테고리 탭 ---------- */
+.cat-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.cat-tab{
+  font-family:'Jua';font-size:1.02rem;background:#fff;border:2px solid rgba(46,42,38,.12);
+  border-radius:999px;padding:11px 24px;cursor:pointer;
+  transition:transform .15s, background .15s, border-color .15s;
+  box-shadow:0 3px 0 rgba(46,42,38,.14);
+}
+.cat-tab:hover{transform:translateY(-3px)}
+.cat-tab.on{background:var(--ink);color:var(--sun);border-color:var(--ink)}
+.cat-hidden{display:none !important}
+.lect-emoji{
+  height:210px;width:100%;display:grid;place-items:center;font-size:4.4rem;
+  background:var(--cream);border-radius:18px;margin-bottom:18px;
+}
+.pd-intro.no-cover{grid-template-columns:1fr}

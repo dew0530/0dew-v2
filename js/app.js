@@ -113,6 +113,12 @@
 
   // 아이디 비교: 앞뒤 공백·대소문자 차이로 연결이 끊기지 않게 함
   const normId = (v) => String(v == null ? '' : v).trim().toLowerCase();
+  // 강연 카테고리 (지정이 없으면 어린이 그림책으로 취급 — 기존 데이터 호환)
+  const lecCat = (lec) => normId(lec && lec.category) || 'kids';
+  const DEFAULT_CATS = [
+    { id: 'kids', label: '📚 어린이 그림책' },
+    { id: 'creative', label: '✍️ 창작·출판' }
+  ];
 
   const THEME_CLASS = { tomato: '', mint: 'theme-mint', leaf: 'theme-leaf' };
   const DETAIL_BG = ['var(--cream)', '#fff', '#E9F6F3'];
@@ -161,10 +167,10 @@
       </div>`).join('');
     const results = lectures.map((lec) => {
       const book = books.find((b) => b.id === lec.bookId) || {};
-      return `<div class="reco-result" data-book="${esc(lec.id)}">
+      return `<div class="reco-result" data-book="${esc(lec.id)}" data-cat="${esc(lecCat(lec))}">
         ${book.cover ? `<img src="${esc(book.cover)}" alt="${esc(book.coverAlt)}">` : ''}
         <div>
-          <h3>${esc((book.emoji ? book.emoji + ' ' : '') + (book.title || ''))}</h3>
+          <h3>${esc(((book.emoji || lec.emoji) ? (book.emoji || lec.emoji) + ' ' : '') + (book.title || lec.title || lec.id))}</h3>
           ${lec.recoWhy ? `<p class="reco-why">${esc(lec.recoWhy)}</p>` : ''}
           ${kwRow(lec.recoKeywords)}
           ${lec.recoActs ? `<p class="reco-act"><b>대표 독후활동</b> — ${esc(lec.recoActs)}</p>` : ''}
@@ -186,44 +192,47 @@
     </div></section>`;
   }
 
-function renderWhy(site) {
-  const w = obj(site.why);
-  const cards = arr(w.cards);
-  if (!cards.length) return '';
-
-  return `<section id="why"><div class="wrap">
-    ${w.heroImage ? `<img class="why-hero reveal" src="${esc(w.heroImage)}" alt="${esc(w.heroAlt)}" loading="lazy">` : ''}
-    ${secHead(w)}
-    <div class="why-grid">
-      ${cards.map(c => `
+  function renderWhy(site) {
+    const w = obj(site.why);
+    const cards = arr(w.cards);
+    if (!cards.length) return '';
+    return `<section id="why"><div class="wrap">
+      ${w.heroImage ? `<img class="why-hero reveal" src="${esc(w.heroImage)}" alt="${esc(w.heroAlt)}" loading="lazy">` : ''}
+      ${secHead(w)}
+      <div class="why-grid">${cards.map((c) => `
         <div class="why-card reveal">
           ${c.icon ? `<div class="ico">${esc(c.icon)}</div>` : ''}
           ${c.titleHtml ? `<h3>${raw(c.titleHtml)}</h3>` : ''}
           ${c.text ? `<p>${esc(c.text)}</p>` : ''}
           ${c.photo ? `<img class="why-photo" src="${esc(c.photo)}" alt="${esc(c.photoAlt)}">` : ''}
-        </div>
-      `).join('')}
-    </div>
-  </div></section>`;
-}
-  
+        </div>`).join('')}
+      </div>
+    </div></section>`;
+  }
 
   function renderLectures(site, lectures, books) {
     if (!lectures.length) return '';
     const s = obj(site.lecturesSection);
+    const cats = (arr(s.categories).length ? arr(s.categories) : DEFAULT_CATS)
+      .filter((cItem) => lectures.some((l) => lecCat(l) === normId(cItem.id)));
+    const firstCat = cats.length ? normId(cats[0].id) : lecCat(lectures[0]);
+    const tabsHtml = cats.length > 1 ? `<div class="cat-tabs">${cats.map((cItem, i) =>
+      `<button class="cat-tab${i === 0 ? ' on' : ''}" type="button" data-cat="${esc(normId(cItem.id))}">${esc(cItem.label)}</button>`).join('')}</div>` : '';
     const filters = [];
     lectures.forEach((lec) => {
-      if (lec.filterLabel) filters.push({ label: lec.filterLabel, targets: ['#lect-' + lec.id] });
+      if (lec.filterLabel) filters.push({ label: lec.filterLabel, targets: ['#lect-' + lec.id], cat: lecCat(lec) });
     });
-    const allTargets = lectures.map((lec) => '#lect-' + lec.id);
-    arr(s.commonFilters).forEach((label) => filters.push({ label, targets: allTargets }));
+    const firstCatTargets = lectures.filter((l) => lecCat(l) === firstCat).map((lec) => '#lect-' + lec.id);
+    arr(s.commonFilters).forEach((label) => filters.push({ label, targets: firstCatTargets, cat: firstCat }));
     const filterHtml = filters.length ? `<div class="filter-row">${filters.map((f) =>
-      `<button class="filter-btn" type="button" data-target="${esc(f.targets.join(','))}">${esc(f.label)}</button>`).join('')}</div>` : '';
+      `<button class="filter-btn${f.cat === firstCat ? '' : ' cat-hidden'}" type="button" data-cat="${esc(f.cat)}" data-target="${esc(f.targets.join(','))}">${esc(f.label)}</button>`).join('')}</div>` : '';
     const cards = lectures.map((lec) => {
       const book = books.find((b) => b.id === lec.bookId) || {};
-      return `<div class="lect-card reveal" id="lect-${esc(lec.id)}">
-        ${book.cover ? `<img src="${esc(book.cover)}" alt="${esc(book.coverAlt)}">` : ''}
-        <h3>${esc(book.title || lec.id)}</h3>
+      const cat = lecCat(lec);
+      return `<div class="lect-card reveal${cat === firstCat ? '' : ' cat-hidden'}" data-cat="${esc(cat)}" id="lect-${esc(lec.id)}">
+        ${book.cover ? `<img src="${esc(book.cover)}" alt="${esc(book.coverAlt)}">`
+          : `<div class="lect-emoji" aria-hidden="true">${esc(book.emoji || lec.emoji || '🎤')}</div>`}
+        <h3>${esc(book.title || lec.title || lec.id)}</h3>
         ${lec.oneLiner ? `<p>${esc(lec.oneLiner)}</p>` : ''}
         ${kwRow(lec.keywords)}
         <a class="lect-more" href="#prog-${esc(lec.id)}">${esc(s.moreLabel || '프로그램 자세히 보기')}</a>
@@ -231,6 +240,7 @@ function renderWhy(site) {
     }).join('');
     return `<section id="lectures"><div class="wrap">
       ${secHead(s, 'color:#5b5348')}
+      ${tabsHtml}
       ${filterHtml}
       <div class="lect-grid">${cards}</div>
     </div></section>`;
@@ -302,20 +312,24 @@ function renderWhy(site) {
         <a class="pdf-btn reveal" href="${esc(p.file)}" target="_blank" rel="noopener" download>📄 ${esc(p.title || '활동지')}</a>`).join('')}
       </div>` : '';
 
-    const applyLabel = (s.applyLabelTemplate || "📮 '{title}' 강연 신청하기").replace('{title}', book.title || '');
+    const title = book.title || lec.title || lec.id;
+    const emoji = book.emoji || lec.emoji || '';
+    const storyText = book.story || lec.intro;
+    const storyHead = book.story ? esc(book.storyIcon || '📕') + ' 책 소개' : '💬 강연 소개';
+    const applyLabel = (s.applyLabelTemplate || "📮 '{title}' 강연 신청하기").replace('{title}', title);
 
     return `<section class="prog-detail ${theme}" id="prog-${esc(lec.id)}" style="background:${bg}">
       <div class="wrap">
         ${lec.eyebrow ? `<p class="sec-eyebrow">${esc(lec.eyebrow)}</p>` : ''}
-        <h2 class="sec-title">${esc((book.emoji ? book.emoji + ' ' : '') + (book.title || ''))}</h2>
+        <h2 class="sec-title">${esc((emoji ? emoji + ' ' : '') + title)}</h2>
         ${lec.tagline ? `<p class="sec-desc">${esc(lec.tagline)}</p>` : ''}
-        <div class="pd-intro">
+        <div class="pd-intro${book.cover ? '' : ' no-cover'}">
           ${book.cover ? `<div class="pd-cover reveal">
             <img src="${esc(book.cover)}" alt="${esc(book.coverAlt)}">
             ${book.buyUrl ? `<a class="pd-buy" href="${esc(book.buyUrl)}" target="_blank" rel="noopener">${esc(book.buyLabel || '책 보러 가기 →')}</a>` : ''}
           </div>` : ''}
           <div class="reveal">
-            ${book.story ? `<div class="pd-story"><h3>${esc(book.storyIcon || '📕')} 책 소개</h3><p>${esc(book.story)}</p></div>` : ''}
+            ${storyText ? `<div class="pd-story"><h3>${storyHead}</h3><p>${esc(storyText)}</p></div>` : ''}
             <div class="pd-cols">
               ${list('✨ 교육 효과', lec.effects)}
               ${list('🎯 추천 대상', lec.targets)}
@@ -430,11 +444,14 @@ function renderWhy(site) {
     const clean = (t) => t.replace(/[\u{2190}-\u{2BFF}\u{1F000}-\u{1FAFF}\u{FE0F}]/gu, '').trim();
 
     function showResults() {
+      let shown = 0;
       reco.querySelectorAll('.reco-result').forEach((el) => {
-        el.classList.toggle('show', state.book === 'all' || el.dataset.book === state.book);
+        const hit = state.book === 'all' || el.dataset.book === state.book || el.dataset.cat === state.book;
+        el.classList.toggle('show', hit);
+        if (hit) shown++;
       });
       picked.textContent = '💡 ' + [state.who, state.time].filter(Boolean).join(' · ') + ' '
-        + (state.book === 'all' ? (r.resultAll || '세 프로그램 모두 추천해요!') : (r.resultOne || '기준 추천 프로그램이에요.'));
+        + (shown > 1 ? (r.resultAll || '이 프로그램들을 모두 추천해요!') : (r.resultOne || '기준 추천 프로그램이에요.'));
       results.classList.add('show');
     }
     function reset() {
@@ -457,6 +474,33 @@ function renderWhy(site) {
       else if (n === 2) { state.who = clean(b.textContent); if (steps[2]) steps[2].classList.add('show'); else showResults(); }
       else { state.time = clean(b.textContent); showResults(); }
     });
+  }
+
+  function initCatTabs() {
+    const tabs = document.querySelectorAll('.cat-tab');
+    if (!tabs.length) return;
+    function apply(cat) {
+      document.querySelectorAll('.cat-tab').forEach((t) => t.classList.toggle('on', t.dataset.cat === cat));
+      document.querySelectorAll('.lect-card').forEach((card) => {
+        const show = card.dataset.cat === cat;
+        card.classList.toggle('cat-hidden', !show);
+        if (show) {
+          card.classList.add('on');
+          card.style.animation = 'none';
+          void card.offsetWidth;
+          card.style.animation = 'rise .45s ease both';
+        }
+      });
+      let visible = 0;
+      document.querySelectorAll('.filter-btn').forEach((f) => {
+        const show = f.dataset.cat === cat;
+        f.classList.toggle('cat-hidden', !show);
+        if (show) visible++;
+      });
+      const row = document.querySelector('.filter-row');
+      if (row) row.style.display = visible ? '' : 'none';
+    }
+    tabs.forEach((t) => t.addEventListener('click', () => apply(t.dataset.cat)));
   }
 
   function initFilter() {
@@ -524,7 +568,10 @@ function renderWhy(site) {
       renderWhy(site),
       renderLectures(site, lectures, books),
       details,
+      renderReviews(site, reviews),
+      renderNews(site, news),
       renderAbout(site),
+      renderFaq(site, faq),
       renderContact(site),
       renderFooter(site)
     ].join('');
@@ -536,6 +583,7 @@ function renderWhy(site) {
 
     initReveal();
     initReco(site);
+    initCatTabs();
     initFilter();
     showJsonProblems();
 
