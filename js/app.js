@@ -111,6 +111,9 @@
     return h;
   }
 
+  // 아이디 비교: 앞뒤 공백·대소문자 차이로 연결이 끊기지 않게 함
+  const normId = (v) => String(v == null ? '' : v).trim().toLowerCase();
+
   const THEME_CLASS = { tomato: '', mint: 'theme-mint', leaf: 'theme-leaf' };
   const DETAIL_BG = ['var(--cream)', '#fff', '#E9F6F3'];
 
@@ -279,7 +282,7 @@
         </figure>`;
       }).join('')}</div>` : '';
 
-    const shots = gallery.filter((g) => g.lectureId === lec.id);
+    const shots = gallery.filter((g) => normId(g.lectureId) === normId(lec.id));
     const wall = shots.length ? `
       <h3 class="pd-sub">${esc(lec.galleryTitle || '활동 사진')}</h3>
       <div class="polaroid-wall">${shots.map((g) => `
@@ -287,7 +290,7 @@
         ${g.caption ? `<figcaption>${esc(g.caption)}</figcaption>` : ''}</figure>`).join('')}
       </div>` : '';
 
-    const myPdfs = arr(pdfs).filter((p) => p.lectureId === lec.id && p.file);
+    const myPdfs = arr(pdfs).filter((p) => normId(p.lectureId) === normId(lec.id) && p.file);
     const pdfBlock = myPdfs.length ? `
       <h3 class="pd-sub">활동지 내려받기</h3>
       <div class="pdf-row">${myPdfs.map((p) => `
@@ -533,6 +536,17 @@
     initReco(site);
     initFilter();
     showJsonProblems();
+
+    // 연결 점검: pdfs/gallery의 lectureId가 어떤 강연과도 안 맞으면 콘솔에 알려 줌
+    const lecIds = lectures.map((l) => normId(l.id));
+    [['pdfs.json', pdfs], ['gallery.json', gallery]].forEach(([name, list]) => {
+      list.forEach((it) => {
+        if (it && it.lectureId != null && !lecIds.includes(normId(it.lectureId))) {
+          console.warn('[data] ' + name + '의 lectureId "' + it.lectureId +
+            '" 와 일치하는 강연이 없어 화면에 표시되지 않습니다. lectures.json의 id: ' + lecIds.join(', '));
+        }
+      });
+    });
   }
 
   main();

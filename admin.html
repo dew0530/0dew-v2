@@ -219,7 +219,7 @@ const SCHEMAS = {
     file: 'gallery.json', tab: '📸 사진', itemName: '사진',
     titleOf: (it) => (it.caption || it.image || '(사진)'),
     fields: [
-      F('lectureId', '어느 프로그램의 사진인가요?', { req: true, hint: '강연 탭의 아이디: banchan / geobugi / hero (새 프로그램이면 그 아이디)' }),
+      F('lectureId', '어느 프로그램의 사진인가요?', { type: 'lectureRef', req: true, hint: '목록에서 고르면 오타 걱정이 없어요' }),
       F('image', '사진', { type: 'image', req: true, hint: '[📷 올리기]를 누르면 자동으로 압축해 저장돼요' }),
       F('caption', '사진 아래 설명 문구'),
       F('alt', '사진 설명 (화면낭독기용)')
@@ -257,7 +257,7 @@ const SCHEMAS = {
     file: 'pdfs.json', tab: '📄 활동지', itemName: '활동지 PDF',
     titleOf: (it) => (it.title || it.file || '(활동지)'),
     fields: [
-      F('lectureId', '어느 프로그램의 활동지인가요?', { req: true, hint: '강연 탭의 아이디: banchan / geobugi / hero (새 프로그램이면 그 아이디)' }),
+      F('lectureId', '어느 프로그램의 활동지인가요?', { type: 'lectureRef', req: true, hint: '목록에서 고르면 사이트의 해당 프로그램에 자동으로 연결돼요' }),
       F('title', '버튼에 보일 이름', { req: true, hint: '예: 식판 활동지' }),
       F('file', 'PDF 파일', { type: 'pdf', req: true, hint: '[📄 올리기]로 업로드하면 사이트의 해당 프로그램에 내려받기 버튼이 자동으로 생겨요' })
     ]
@@ -334,6 +334,24 @@ function fieldHtml(f, value, name) {
       </div>`).join('');
     return `<div class="field"><label>${esc(f.label)}</label>${rows}
       <button class="addsub" data-subadd="${name}">＋ ${esc(f.label)} 추가</button>${hint}</div>`;
+  }
+  if (f.type === 'lectureRef') {
+    const lecs = state.data.lectures || [];
+    const books = state.data.books || [];
+    const cur = String(value == null ? '' : value).trim();
+    let opts = '<option value="">— 프로그램 선택 —</option>';
+    let found = false;
+    lecs.forEach((l) => {
+      const id = String(l.id || '').trim();
+      if (!id) return;
+      const book = books.find((b) => String(b.id || '').trim() === id);
+      const label = id + (book && book.title ? ' — ' + book.title : '');
+      if (id === cur) found = true;
+      opts += `<option value="${esc(id)}"${id === cur ? ' selected' : ''}>${esc(label)}</option>`;
+    });
+    if (cur && !found) opts += `<option value="${esc(cur)}" selected>⚠️ ${esc(cur)} (일치하는 강연 없음 — 확인 필요)</option>`;
+    if (!lecs.length) return `<div class="field"><label>${esc(f.label)}${req}</label><input type="text" data-bind="${name}" value="${esc(value)}">${hint}</div>`;
+    return `<div class="field"><label>${esc(f.label)}${req}</label><select data-bind="${name}">${opts}</select>${hint}</div>`;
   }
   if (f.type === 'image' || f.type === 'pdf') {
     const icon = f.type === 'image' ? '📷' : '📄';
@@ -769,6 +787,13 @@ document.addEventListener('click', (e) => {
 
 document.getElementById('upfile').addEventListener('change', (e) => {
   handleUpload(e.target.files[0]);
+});
+
+// select 요소는 input 이벤트가 안 오는 브라우저가 있어 change로도 반영
+document.addEventListener('change', (e) => {
+  if (e.target.tagName === 'SELECT' && e.target.getAttribute('data-bind')) {
+    e.target.dispatchEvent(new Event('input', { bubbles: true }));
+  }
 });
 
 document.addEventListener('change', async (e) => {
