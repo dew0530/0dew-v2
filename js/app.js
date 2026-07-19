@@ -524,10 +524,7 @@ function renderWhy(site) {
       renderWhy(site),
       renderLectures(site, lectures, books),
       details,
-      renderReviews(site, reviews),
-      renderNews(site, news),
       renderAbout(site),
-      renderFaq(site, faq),
       renderContact(site),
       renderFooter(site)
     ].join('');
