@@ -206,7 +206,7 @@ function renderWhy(site) {
     </div>
   </div></section>`;
 }
-  }
+  
 
   function renderLectures(site, lectures, books) {
     if (!lectures.length) return '';
