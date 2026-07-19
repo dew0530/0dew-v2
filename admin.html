@@ -479,6 +479,7 @@ function locateError(text, err) {
 
 /* ---------- 내려받기 ---------- */
 function download(key) {
+  normalizeRefs();
   let file, payload;
   if (key === 'siteinfo') { file = 'site.json'; payload = state.site; }
   else { file = SCHEMAS[key].file; payload = state.data[key] || []; }
@@ -540,6 +541,34 @@ async function ghCommitFile(path, base64, message) {
   }
 }
 
+/* ---------- lectureId 교정: 제목이 저장돼 있으면 id로 바꿔 줌 ---------- */
+function lectureIdFromAny(v) {
+  const s = String(v == null ? '' : v).trim();
+  if (!s) return s;
+  const norm = (x) => String(x == null ? '' : x).trim().toLowerCase().replace(/\s+/g, '');
+  const lecs = state.data.lectures || [];
+  const books = state.data.books || [];
+  const byId = lecs.find((l) => norm(l.id) === norm(s));
+  if (byId) return String(byId.id).trim();
+  const bk = books.find((b) => norm(b.title) === norm(s) || norm((b.emoji || '') + (b.title || '')) === norm(s));
+  if (bk) {
+    const lec = lecs.find((l) => norm(l.bookId) === norm(bk.id));
+    return String((lec ? lec.id : bk.id)).trim();
+  }
+  return s; // 무엇과도 일치하지 않으면 그대로 두고 드롭다운의 ⚠️ 표시로 알림
+}
+function normalizeRefs() {
+  let fixed = 0;
+  ['pdfs', 'gallery'].forEach((k) => {
+    (state.data[k] || []).forEach((it) => {
+      if (!it || it.lectureId == null) return;
+      const v = lectureIdFromAny(it.lectureId);
+      if (v !== it.lectureId) { it.lectureId = v; fixed++; markDirty(k); }
+    });
+  });
+  return fixed;
+}
+
 /* ---------- 변경 추적 + 한 번에 올리기 ---------- */
 const dirty = new Set();
 function markDirty(key) {
@@ -559,6 +588,7 @@ function fileKeyOf(el) {
   return null;
 }
 async function deployAll() {
+  normalizeRefs();
   if (!dirty.size) { toast('올릴 변경사항이 없어요.'); return; }
   if (!ghReady()) {
     document.getElementById('ghbox').classList.add('open');
@@ -865,10 +895,14 @@ async function init() {
     if (v && v.youtubeId != null && v.url == null) { v.url = v.youtubeId; delete v.youtubeId; }
   }));
 
+  // 잘못 저장된 연결 교정: lectureId에 제목이 들어 있으면 id로 바꿔 줌
+  const fixedRefs = normalizeRefs();
+
   Object.keys(SCHEMAS).forEach(renderListPanel);
   renderSitePanel();
   renderValidator();
   ghInitUi();
+  if (fixedRefs) toast('🔧 제목으로 저장돼 있던 연결 ' + fixedRefs + '건을 아이디로 자동 교정했어요. [🚀 사이트에 올리기](또는 💾 내려받기)로 저장해 주세요!');
 }
 init();
 </script>
