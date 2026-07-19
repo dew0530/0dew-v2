@@ -472,3 +472,9 @@ a.news-card:hover{transform:translateY(-3px)}
   color:var(--ink);border-radius:999px;padding:11px 20px;
   box-shadow:0 3px 0 var(--accent-deep,#c93a1c);transition:transform .15s;display:inline-flex;align-items:center;gap:6px}
 .pdf-btn:hover{transform:translateY(-3px)}
+
+/* ---------- WHY 섹션 대표 사진 ---------- */
+.why-hero{width:100%;max-height:420px;object-fit:cover;object-position:center 35%;
+  border-radius:var(--radius);border:5px solid #fff;
+  box-shadow:0 12px 28px rgba(0,0,0,.12);margin-bottom:40px}
+@media(max-width:760px){.why-hero{max-height:260px;margin-bottom:28px}}
