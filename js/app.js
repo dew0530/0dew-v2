@@ -191,8 +191,9 @@
     const cards = arr(w.cards);
     if (!cards.length) return '';
     return `<section id="why"><div class="wrap">
+      ${w.heroImage ? `<img class="why-hero reveal" src="${esc(w.heroImage)}" alt="${esc(w.heroAlt)}" loading="lazy">` : ''}
       ${secHead(w)}
-      <div class="why-grid">${cards.map((c) => `
+      <div class="why-grid">
         <div class="why-card reveal">
           ${c.icon ? `<div class="ico">${esc(c.icon)}</div>` : ''}
           ${c.titleHtml ? `<h3>${raw(c.titleHtml)}</h3>` : ''}
