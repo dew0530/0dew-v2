@@ -1,17 +1,80 @@
 [
-  { "lectureId": "banchan", "image": "images/gallery-banchan-1.jpg", "caption": "예스24 그림책 독후활동", "alt": "예스24 그림책 독후활동 현장" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-2.jpg", "caption": "예스24 강서NC점 강연", "alt": "예스24 서점 강연 진행 모습" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-3.jpg", "caption": "부모님과 함께 즐거운 시간", "alt": "수료증을 든 어린이들과 함께" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-4.jpg", "caption": "참여형 수업", "alt": "파주출판도시 그림책잔치 무대" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-5.jpg", "caption": "대한민국 독서대전 포항", "alt": "대한민국 독서대전 포항 야외 강연" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-6.jpg", "caption": "독서대전 독후활동", "alt": "독서대전에서 아이와 활동하는 모습" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-7.jpg", "caption": "길 위의 인문학 · 고창 성호도서관", "alt": "고창 성호도서관 길 위의 인문학 강연" },
-  { "lectureId": "banchan", "image": "images/gallery-banchan-8.jpg", "caption": "도서관과 함께 책읽기 · 청계도서관", "alt": "성동구립 청계도서관 독후활동" },
-  { "lectureId": "geobugi", "image": "images/gallery-geobugi-1.jpg", "caption": "어린이집 작가와의 만남", "alt": "어린이집 작가와의 만남" },
-  { "lectureId": "geobugi", "image": "images/gallery-geobugi-2.jpg", "caption": "초등교사와 함께하는 그림책 시사회", "alt": "초등교사와 함께하는 그림책 시사회" },
-  { "lectureId": "geobugi", "image": "images/gallery-geobugi-3.jpg", "caption": "라온 그림책 놀이터", "alt": "라온 그림책 놀이터 강연" },
-  { "lectureId": "geobugi", "image": "images/gallery-geobugi-4.jpg", "caption": "함께 만드는 시간", "alt": "라온 그림책 놀이터 만들기 활동" },
-  { "lectureId": "hero", "image": "images/gallery-hero-1.jpg", "caption": "랜선 그림책 파티 (Zoom)", "alt": "랜선 그림책 파티 줌 진행 화면" },
-  { "lectureId": "hero", "image": "images/gallery-hero-2.jpg", "caption": "초등학교 작가와의 만남", "alt": "랜선 파티에서 활동을 보여주는 어린이" },
-  { "lectureId": "hero", "image": "images/gallery-hero-3.jpg", "caption": "파주출판도서 어린이 책잔치", "alt": "어린이 책잔치 강연장" }
+  {
+    "lectureId": "banchan",
+    "image": "images/gallery-banchan-1.jpg",
+    "caption": "예스24 그림책 독후활동",
+    "alt": "예스24 그림책 독후활동 현장"
+  },
+  {
+    "lectureId": "banchan",
+    "image": "images/gallery-banchan-3.jpg",
+    "caption": "재미나게 집중하는 시간",
+    "alt": "수료증을 든 어린이들과 함께"
+  },
+  {
+    "lectureId": "banchan",
+    "image": "images/gallery-banchan-5.jpg",
+    "caption": "대한민국 독서대전 포항",
+    "alt": "대한민국 독서대전 포항 야외 강연"
+  },
+  {
+    "lectureId": "banchan",
+    "image": "images/gallery-banchan-6.jpg",
+    "caption": "건강 앞치마 만들기",
+    "alt": "독서대전에서 아이와 활동하는 모습"
+  },
+  {
+    "lectureId": "banchan",
+    "image": "images/gallery-banchan-7.jpg",
+    "caption": "길 위의 인문학 · 고창 성호도서관",
+    "alt": "고창 성호도서관 길 위의 인문학 강연"
+  },
+  {
+    "lectureId": "banchan",
+    "image": "images/gallery-banchan-8.jpg",
+    "caption": "도서관과 함께 책읽기 · 청계도서관",
+    "alt": "성동구립 청계도서관 독후활동"
+  },
+  {
+    "lectureId": "geobugi",
+    "image": "images/gallery-geobugi-1.jpg",
+    "caption": "어린이집 작가와의 만남",
+    "alt": "어린이집 작가와의 만남"
+  },
+  {
+    "lectureId": "geobugi",
+    "image": "images/gallery-geobugi-2.jpg",
+    "caption": "초등교사와 함께하는 그림책 시사회",
+    "alt": "초등교사와 함께하는 그림책 시사회"
+  },
+  {
+    "lectureId": "geobugi",
+    "image": "images/gallery-geobugi-3.jpg",
+    "caption": "라온 그림책 놀이터",
+    "alt": "라온 그림책 놀이터 강연"
+  },
+  {
+    "lectureId": "geobugi",
+    "image": "images/gallery-geobugi-4.jpg",
+    "caption": "함께 만드는 시간",
+    "alt": "라온 그림책 놀이터 만들기 활동"
+  },
+  {
+    "lectureId": "hero",
+    "image": "images/gallery-hero-1.jpg",
+    "caption": "랜선 그림책 파티 (Zoom)",
+    "alt": "랜선 그림책 파티 줌 진행 화면"
+  },
+  {
+    "lectureId": "hero",
+    "image": "images/gallery-hero-2.jpg",
+    "caption": "초등학교 작가와의 만남",
+    "alt": "랜선 파티에서 활동을 보여주는 어린이"
+  },
+  {
+    "lectureId": "hero",
+    "image": "images/gallery-hero-3.jpg",
+    "caption": "파주출판도서 어린이 책잔치",
+    "alt": "어린이 책잔치 강연장"
+  }
 ]
