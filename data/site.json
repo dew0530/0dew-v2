@@ -3,21 +3,50 @@
   "metaDescription": "그림책으로 아이들의 마음을 만나는 시간. 김이슬 작가의 참여형 독서 강연 — 판타스틱 반찬 특공대, 거부기의 저주, 식탁 위 슈퍼 히어로. 학교, 도서관, 교육청, 어린이집 작가 강연 의뢰를 받습니다.",
   "logo": "김이슬",
   "nav": [
-    { "label": "1분 강연 추천", "href": "#reco" },
-    { "label": "이 강연이 특별한 이유", "href": "#why" },
-    { "label": "프로그램 소개", "href": "#lectures" },
-    { "label": "강연 후기", "href": "#reviews" },
-    { "label": "소식", "href": "#news" },
-    { "label": "작가 소개", "href": "#about" }
+    {
+      "label": "1분 강연 추천",
+      "href": "#reco"
+    },
+    {
+      "label": "이 강연이 특별한 이유",
+      "href": "#why"
+    },
+    {
+      "label": "프로그램 소개",
+      "href": "#lectures"
+    },
+    {
+      "label": "강연 후기",
+      "href": "#reviews"
+    },
+    {
+      "label": "소식",
+      "href": "#news"
+    },
+    {
+      "label": "작가 소개",
+      "href": "#about"
+    }
   ],
-  "navCta": { "label": "강연 문의하기", "href": "#contact" },
+  "navCta": {
+    "label": "강연 문의하기",
+    "href": "#contact"
+  },
   "hero": {
     "eyebrow": "출판편집자 · 그림책 작가 · 강연가",
     "titleHtml": "그림책으로 아이들의<br>마음을 만나는 <span class=\"hl\">특별한 시간</span>",
     "lead": "김이슬 작가와 함께하는 참여형 독서 강연. 읽고, 만들고, 약속하는 살아 있는 그림책 수업으로 학교·도서관·서점·어린이집 어디든 달려갑니다!",
     "buttons": [
-      { "label": "📚 대표 강연 보기", "href": "#lectures", "style": "primary" },
-      { "label": "📮 강연 문의하기", "href": "#contact", "style": "ghost" }
+      {
+        "label": "📚 대표 강연 보기",
+        "href": "#lectures",
+        "style": "primary"
+      },
+      {
+        "label": "📮 강연 문의하기",
+        "href": "#contact",
+        "style": "ghost"
+      }
     ],
     "badgesHtml": [
       "📺 <span>SBS 뉴스</span>에 소개된 책",
@@ -35,23 +64,61 @@
       {
         "question": "아이들에게 지금 가장 필요한 교육은 무엇인가요?",
         "options": [
-          { "label": "🍙 식습관 교육", "target": "banchan" },
-          { "label": "🤝 밥상머리 예절 교육", "target": "hero" },
-          { "label": "❤️ 바른 자세 교육", "target": "geobugi" },
-          { "label": "📖 독서 행사", "target": "all" },
-          { "label": "✏️ 작가와의 만남", "target": "all" }
+          {
+            "label": "🍙 식습관 교육",
+            "target": "banchan"
+          },
+          {
+            "label": "🤝 밥상머리 예절 교육",
+            "target": "hero"
+          },
+          {
+            "label": "❤️ 바른 자세 교육",
+            "target": "geobugi"
+          },
+          {
+            "label": "📖 독서 행사",
+            "target": "all"
+          },
+          {
+            "label": "✏️ 작가와의 만남",
+            "target": "all"
+          }
         ]
       },
       {
         "question": "강연 대상은 누구인가요?",
         "options": [
-          { "label": "🐣 유치원" }, { "label": "🌱 초등 저학년" }, { "label": "🌳 초등 고학년" },
-          { "label": "👪 학부모" }, { "label": "🍎 교사" }
+          {
+            "label": "🐣 유치원"
+          },
+          {
+            "label": "🌱 초등 저학년"
+          },
+          {
+            "label": "🌳 초등 고학년"
+          },
+          {
+            "label": "👪 학부모"
+          },
+          {
+            "label": "🍎 교사"
+          }
         ]
       },
       {
         "question": "희망 강연 시간은 어느 정도인가요?",
-        "options": [ { "label": "⏰ 30분" }, { "label": "⏰ 60분" }, { "label": "⏰ 90분" } ]
+        "options": [
+          {
+            "label": "⏰ 30분"
+          },
+          {
+            "label": "⏰ 60분"
+          },
+          {
+            "label": "⏰ 90분"
+          }
+        ]
       }
     ],
     "resultAll": "행사에는 세 프로그램 모두 추천해요!",
@@ -65,17 +132,44 @@
     "title": "왜 김이슬 작가의 강연일까요?",
     "desc": "15년 차 어린이책 편집자이자 엄마의 마음으로, 아이들이 주인공이 되는 강연을 만듭니다.",
     "cards": [
-      { "icon": "🎭", "titleHtml": "직접 체험하는<br>참여형 수업", "text": "그림책 속 이야기를 몸으로 체험해요. 듣기만 하는 강연이 아니라 아이들이 주인공이 됩니다.", "photo": "images/why-1.jpg", "photoAlt": "참여형 수업 강연 사진" },
-      { "icon": "📖", "titleHtml": "작가와 함께 읽는<br>생생한 독서 시간", "text": "책을 만든 작가가 직접 읽어 주는 이야기. 책 뒤에 숨은 비하인드까지 만날 수 있어요.", "photo": "images/why-2.jpg", "photoAlt": "작가와 함께 읽는 독서 시간 사진" },
-      { "icon": "✂️", "titleHtml": "독후활동까지 연결되는<br>완성형 프로그램", "text": "읽고 끝나지 않아요. 만들고, 약속하는 독후활동으로 몸과 마음에 새겨지는 독서가 됩니다.", "photo": "images/why-3.jpg", "photoAlt": "독후활동 프로그램 사진" },
-      { "icon": "🏫", "titleHtml": "학교·도서관·기관<br>맞춤형 강연", "text": "연령·인원·시간에 맞춰 구성해요. 도서관, 유치원, 학교, 학부모 강연, 온라인(Zoom)까지 가능합니다.", "photo": "images/why-4.jpg", "photoAlt": "기관 맞춤형 강연 사진" }
+      {
+        "icon": "🎭",
+        "titleHtml": "직접 체험하는<br>참여형 수업",
+        "text": "그림책 속 이야기를 몸으로 체험해요. 듣기만 하는 강연이 아니라 아이들이 주인공이 됩니다.",
+        "photo": "images/why-1.jpg",
+        "photoAlt": "참여형 수업 강연 사진"
+      },
+      {
+        "icon": "📖",
+        "titleHtml": "작가와 함께 읽는<br>생생한 독서 시간",
+        "text": "책을 만든 작가가 직접 읽어 주는 이야기. 책 뒤에 숨은 비하인드까지 만날 수 있어요.",
+        "photo": "images/why-2.jpg",
+        "photoAlt": "작가와 함께 읽는 독서 시간 사진"
+      },
+      {
+        "icon": "✂️",
+        "titleHtml": "독후활동까지 연결되는<br>완성형 프로그램",
+        "text": "읽고 끝나지 않아요. 만들고, 약속하는 독후활동으로 몸과 마음에 새겨지는 독서가 됩니다.",
+        "photo": "images/why-3.jpg",
+        "photoAlt": "독후활동 프로그램 사진"
+      },
+      {
+        "icon": "🏫",
+        "titleHtml": "학교·도서관·기관<br>맞춤형 강연",
+        "text": "연령·인원·시간에 맞춰 구성해요. 도서관, 유치원, 학교, 학부모 강연, 온라인(Zoom)까지 가능합니다.",
+        "photo": "images/why-4.jpg",
+        "photoAlt": "기관 맞춤형 강연 사진"
+      }
     ]
   },
   "lecturesSection": {
     "eyebrow": "대표 강연 프로그램",
     "title": "세 권의 그림책, 세 가지 강연",
     "desc": "관심 있는 주제를 누르면 꼭 맞는 프로그램을 바로 보여 드려요.",
-    "commonFilters": [ "📖 독서", "✏️ 작가와의 만남" ],
+    "commonFilters": [
+      "📖 독서",
+      "✏️ 작가와의 만남"
+    ],
     "moreLabel": "프로그램 자세히 보기",
     "applyLabelTemplate": "📮 '{title}' 강연 신청하기"
   },
@@ -97,10 +191,26 @@
     "photoAlt": "김이슬 작가 프로필 사진",
     "photoSticker": "안녕하세요!",
     "facts": [
-      { "icon": "✏️", "strong": "15년 차 출판 편집자(북에디터)", "text": "다양한 분야의 어린이책을 기획하고 만드는 출판 전문가" },
-      { "icon": "📖", "strong": "다양한 어린이책 집필", "text": "《판타스틱 반찬 특공대》 《거부기의 저주》 《식탁 위 슈퍼 히어로》 등" },
-      { "icon": "🎤", "strong": "전국 도서관·서점·학교·어린이집 강연", "text": "풍성한 작가와의 만남 행사" },
-      { "icon": "💛", "strong": "예쁜 딸아이를 키우는 엄마", "text": "엄마의 마음으로 준비하는 강연" }
+      {
+        "icon": "✏️",
+        "strong": "15년 차 출판 편집자(북에디터)",
+        "text": "다양한 분야의 어린이책을 기획하고 만드는 출판 전문가"
+      },
+      {
+        "icon": "📖",
+        "strong": "다양한 어린이책 집필",
+        "text": "《판타스틱 반찬 특공대》 《거부기의 저주》 《식탁 위 슈퍼 히어로》 등"
+      },
+      {
+        "icon": "🎤",
+        "strong": "전국 도서관·서점·학교·어린이집 강연",
+        "text": "풍성한 작가와의 만남 행사"
+      },
+      {
+        "icon": "💛",
+        "strong": "예쁜 딸아이를 키우는 엄마",
+        "text": "엄마의 마음으로 준비하는 강연"
+      }
     ]
   },
   "faqSection": {
@@ -113,11 +223,24 @@
     "titleHtml": "우리 아이들을 만나러<br>어디든 달려갑니다!",
     "desc": "학교, 도서관, 서점, 어린이집, 교육청, 온라인(Zoom) 모두 가능합니다. 대상 연령·인원·희망 활동을 알려 주시면 꼭 맞는 프로그램을 제안해 드릴게요.",
     "ctaLabel": "📮 지금 강연 문의하기",
-    "ctaHref": "mailto:mybluetime@gmail.com",
+    "ctaHref": "mailto:mybluetime@naver.com",
     "contacts": [
-      { "icon": "📞", "label": "010-4424-4602", "href": "tel:010-4424-4602" },
-      { "icon": "✉️", "label": "mybluetime@gmail.com", "href": "mailto:mybluetime@gmail.com" },
-      { "icon": "📷", "label": "instagram.com/0dew0dew", "href": "https://www.instagram.com/0dew0dew/", "external": true }
+      {
+        "icon": "📞",
+        "label": "010-4424-4602",
+        "href": "tel:010-4424-4602"
+      },
+      {
+        "icon": "✉️",
+        "label": "mybluetime@naver.com",
+        "href": "mailto:mybluetime@naver.com"
+      },
+      {
+        "icon": "📷",
+        "label": "instagram.com/0dew0dew",
+        "href": "https://www.instagram.com/0dew0dew/",
+        "external": true
+      }
     ],
     "note": ""
   },
