@@ -269,7 +269,16 @@ const SITE_FIELDS = [
   { path: 'hero.eyebrow', label: '맨 위 작은 소개 문구' },
   { path: 'hero.titleHtml', label: '큰 제목', type: 'textarea', hint: '줄바꿈은 <br>, 빨간 강조는 <span class="hl">글자</span> 그대로 쓰면 됩니다' },
   { path: 'hero.lead', label: '큰 제목 아래 소개 문단', type: 'textarea' },
+  { path: 'why.heroImage', label: 'WHY 섹션 대표 사진 (제목 위 큰 가로 사진)', type: 'image', hint: '[📷 올리기]를 누르면 자동 압축되어 저장돼요. 비우면 사진 없이 표시됩니다' },
+  { path: 'why.heroAlt', label: 'WHY 대표 사진 설명 (화면낭독기용)' },
   { path: 'why.desc', label: '"왜 김이슬 작가의 강연일까요?" 아래 설명', type: 'textarea' },
+  { path: 'why.cards', label: 'WHY 카드 4장', type: 'objlist', item: [
+    F('icon', '아이콘', { hint: '예: 🎭' }),
+    F('titleHtml', '카드 제목', { hint: '줄바꿈은 <br>' }),
+    F('text', '카드 설명', { type: 'textarea' }),
+    F('photo', '카드 사진', { type: 'image' }),
+    F('photoAlt', '사진 설명 (화면낭독기용)')
+  ]},
   { path: 'about.desc', label: '작가 소개 문단', type: 'textarea' },
   { path: 'contact.desc', label: '강연 의뢰서 안내 문단', type: 'textarea' },
   { path: 'contact.ctaHref', label: '문의 버튼 연결 주소', hint: '메일이면 mailto:주소 형태로 적어 주세요' },
