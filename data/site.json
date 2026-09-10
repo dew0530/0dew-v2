@@ -34,7 +34,7 @@
   },
   "hero": {
     "eyebrow": "출판편집자 · 그림책 작가 · 강연가",
-    "titleHtml": "그림책으로 아이들의<br>마음을 만나는 <span class=\"hl\">특별한 시간</span>",
+    "titleHtml": "유초 이음 교육/식습관 교육이 필요하신가요?<br>\n그림책으로 아이들의<br>마음을 만나는 <span class=\"hl\">특별한 시간</span>",
     "lead": "김이슬 작가와 함께하는 참여형 독서 강연. 읽고, 만들고, 약속하는 살아 있는 그림책 수업으로 학교·도서관·서점·어린이집 어디든 달려갑니다!",
     "buttons": [
       {
@@ -235,7 +235,7 @@
     "titleHtml": "우리 아이들을 만나러<br>어디든 달려갑니다!",
     "desc": "학교, 도서관, 서점, 어린이집, 교육청, 온라인(Zoom) 모두 가능합니다. 대상 연령·인원·희망 활동을 알려 주시면 꼭 맞는 프로그램을 제안해 드릴게요. 어린이부터 청소년, 성인까지 대상과 목적에 맞춘 맞춤형 강연도 진행합니다. 홈페이지에 소개되지 않은 프로그램도 편하게 문의해 주세요.",
     "ctaLabel": "📮 지금 강연 문의하기",
-    "ctaHref": "mailto:mybluetime@gmail.com",
+    "ctaHref": "mailto:mybluetime@naver.com",
     "contacts": [
       {
         "icon": "📞",
@@ -244,8 +244,8 @@
       },
       {
         "icon": "✉️",
-        "label": "mybluetime@gmail.com",
-        "href": "mailto:mybluetime@gmail.com"
+        "label": "mybluetime@naver.com",
+        "href": "mailto:mybluetime@naver.com"
       },
       {
         "icon": "📷",
